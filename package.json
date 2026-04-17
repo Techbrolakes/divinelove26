@@ -1,34 +1,27 @@
 {
-  "name": "divinelove26",
-  "version": "0.1.0",
+  "name": "divinelove26-monorepo",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
-    "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.103.0",
-    "canvas-confetti": "^1.9.4",
-    "framer-motion": "^12.38.0",
-    "next": "16.2.3",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-hook-form": "^7.72.1",
-    "zod": "^4.3.6"
+    "with-env": "dotenv -e .env.local --",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "check-types": "turbo run check-types",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:generate": "pnpm --filter @repo/db db:generate",
+    "db:push": "pnpm --filter @repo/db db:push",
+    "db:studio": "pnpm --filter @repo/db db:studio",
+    "db:migrate": "pnpm --filter @repo/db db:migrate",
+    "db:seed": "pnpm --filter @repo/db run db:seed-admin && pnpm --filter @repo/db run db:seed-wedding"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "dotenv-cli": "^11.0.0",
+    "prettier": "^3.6.0",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "turbo": "^2.8.9"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.15.4"
 }

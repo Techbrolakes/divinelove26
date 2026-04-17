@@ -1,0 +1,36 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js",
+    "./schema": "./dist/schema/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "dev": "tsc --watch",
+    "db:generate": "dotenv -e ../../.env.local drizzle-kit generate",
+    "db:migrate": "dotenv -e ../../.env.local drizzle-kit migrate",
+    "db:push": "dotenv -e ../../.env.local drizzle-kit push",
+    "db:studio": "dotenv -e ../../.env.local drizzle-kit studio",
+    "db:seed-admin": "dotenv -e ../../.env.local tsx src/seeds/seed-admin.ts",
+    "db:seed-wedding": "dotenv -e ../../.env.local tsx src/seeds/seed-wedding.ts"
+  },
+  "dependencies": {
+    "@repo/env": "workspace:*",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.44.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@repo/tooling": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.15.30",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.0",
+    "typescript": "5.9.2"
+  }
+}

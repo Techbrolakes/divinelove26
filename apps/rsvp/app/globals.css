@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@import "@repo/tooling/tailwind/styles";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 164 6% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 164 6% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 164 6% 16%;
+    --primary: 220 70% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 164 6% 16%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 41.6%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 164 6% 16%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 50 3% 90%;
+    --input: 50 3% 90%;
+    --ring: 220 70% 50%;
+    --radius: 0.75rem;
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@theme {
+  --animate-shimmer: shimmer 1.5s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@theme inline {
+  /* Royal blue palette — from the DL monogram */
+  --color-royal: #0b3d91;
+  --color-royal-light: #1a56c4;
+  --color-royal-dark: #082a66;
+  --color-royal-50: #eef3fb;
+  --color-royal-100: #d5e0f5;
+  --color-royal-200: #aac1eb;
+  --color-royal-300: #6d94d9;
+  --color-royal-400: #3a6bc5;
+  --color-royal-500: #0b3d91;
+  --color-royal-600: #093278;
+  --color-royal-700: #07265c;
+
+  /* Ivory / cream — warm background tones from the photos */
+  --color-ivory: #faf6ef;
+  --color-cream: #f5efe4;
+  --color-cream-dark: #e8dfd0;
+
+  /* Silver/platinum accents — refined complement to royal blue */
+  --color-gold: #a8b4c4;
+  --color-gold-light: #c5cdd8;
+  --color-gold-dark: #8a97ab;
+
+  /* Warm neutrals — from the photo backgrounds */
+  --color-warm-50: #fdfaf7;
+  --color-warm-100: #f7f1e8;
+  --color-warm-200: #ede4d5;
+  --color-warm-300: #d9cbb5;
+  --color-warm-400: #b8a68a;
+  --color-warm-500: #9c8b72;
+  --color-warm-600: #7a6c58;
+  --color-warm-700: #5c5042;
+
+  /* Fonts */
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: #2d2d2d;
+  font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-royal-200);
+  color: var(--color-royal-700);
+}
+
+/* Noise texture overlay for sections */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Gold shimmer on hover */
+@keyframes gold-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-gold-dark) 0%,
+    var(--color-gold-light) 25%,
+    white 50%,
+    var(--color-gold-light) 75%,
+    var(--color-gold-dark) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gold-shimmer 4s linear infinite;
+}
+
+/* Decorative flourish divider */
+.flourish-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.flourish-divider::before,
+.flourish-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 50%,
+    transparent
+  );
+}
+
+/* Invitation card emboss effect */
+.card-emboss {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Stationery border — double line */
+.stationery-border {
+  position: relative;
+}
+
+.stationery-border::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--color-gold);
+  opacity: 0.25;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.stationery-border::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--color-gold);
+  opacity: 0.12;
+  pointer-events: none;
+  border-radius: inherit;
+}

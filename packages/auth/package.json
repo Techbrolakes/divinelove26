@@ -1,0 +1,29 @@
+{
+  "name": "@repo/auth",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js",
+    "./password": "./dist/password.js",
+    "./otp": "./dist/otp.js",
+    "./session": "./dist/session.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit",
+    "dev": "tsc --watch",
+    "lint": "eslint src --max-warnings 0"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.44.0"
+  },
+  "devDependencies": {
+    "@repo/tooling": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.15.30",
+    "typescript": "5.9.2"
+  }
+}

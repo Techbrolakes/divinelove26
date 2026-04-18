@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import Marquee from "@/components/ui/Marquee";
-import SplitReveal from "@/components/ui/SplitReveal";
-import Ornament from "@/components/ui/Ornament";
+import Marquee from "@/components/ui/marquee";
+import SplitReveal from "@/components/ui/split-reveal";
+import Ornament from "@/components/ui/ornament";
 import { SAVE_THE_DATE_BACKDROP } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 

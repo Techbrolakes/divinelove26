@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import CountdownTimer from "@/components/ui/CountdownTimer";
-import SplitReveal from "@/components/ui/SplitReveal";
-import Ornament from "@/components/ui/Ornament";
-import MagneticButton from "@/components/ui/MagneticButton";
+import CountdownTimer from "@/components/ui/countdown-timer";
+import SplitReveal from "@/components/ui/split-reveal";
+import Ornament from "@/components/ui/ornament";
+import MagneticButton from "@/components/ui/magnetic-button";
 import { COUPLE, HERO_SLIDES } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 

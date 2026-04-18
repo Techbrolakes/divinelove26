@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import SectionWrapper from "@/components/ui/SectionWrapper";
-import SplitReveal from "@/components/ui/SplitReveal";
-import Lightbox from "@/components/ui/Lightbox";
+import SectionWrapper from "@/components/ui/section-wrapper";
+import SplitReveal from "@/components/ui/split-reveal";
+import Lightbox from "@/components/ui/lightbox";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 
 type GalleryImage = {

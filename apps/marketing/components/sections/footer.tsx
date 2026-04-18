@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import SplitReveal from "@/components/ui/SplitReveal";
-import Marquee from "@/components/ui/Marquee";
+import SplitReveal from "@/components/ui/split-reveal";
+import Marquee from "@/components/ui/marquee";
 import { COUPLE } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 

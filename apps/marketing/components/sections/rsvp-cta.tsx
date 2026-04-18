@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import SectionWrapper from "@/components/ui/SectionWrapper";
-import SplitReveal from "@/components/ui/SplitReveal";
-import MagneticButton from "@/components/ui/MagneticButton";
-import Ornament from "@/components/ui/Ornament";
+import SectionWrapper from "@/components/ui/section-wrapper";
+import SplitReveal from "@/components/ui/split-reveal";
+import MagneticButton from "@/components/ui/magnetic-button";
+import Ornament from "@/components/ui/ornament";
 import { RSVP_BACKDROP } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 

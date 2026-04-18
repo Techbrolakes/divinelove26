@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { COUPLE, NAV_LINKS } from "@/lib/constants";
-import Ornament from "@/components/ui/Ornament";
+import Ornament from "@/components/ui/ornament";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -41,12 +41,22 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "bg-ivory/90 backdrop-blur-md shadow-[0_1px_0_rgba(168,180,196,0.25)]"
+            ? "bg-royal-dark/85 backdrop-blur-md border-b border-gold/15 md:bg-ivory/90 md:border-0 md:shadow-[0_1px_0_rgba(168,180,196,0.25)]"
             : "bg-transparent"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <a href="#top" className="flex items-center gap-3 group">
+            {/* Mobile: always white-on-blue (reads on transparent and royal-dark) */}
+            <Image
+              src="/logo/monogram-white-on-blue.jpeg"
+              alt="Divine Love 26"
+              width={40}
+              height={40}
+              className="md:hidden rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
+              priority
+            />
+            {/* Desktop: swap variant with scroll state */}
             <Image
               src={
                 scrolled
@@ -56,7 +66,7 @@ export default function Navbar() {
               alt="Divine Love 26"
               width={40}
               height={40}
-              className="rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="hidden md:block rounded-full object-cover transition-transform duration-500 group-hover:scale-105"
               priority
             />
             <span
@@ -94,7 +104,7 @@ export default function Navbar() {
               mobileOpen
                 ? "border-gold/60 bg-royal-dark/80 backdrop-blur-md shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
                 : scrolled
-                  ? "border-royal/25 bg-white/70 backdrop-blur-sm hover:border-royal hover:bg-white"
+                  ? "border-gold/30 bg-royal-dark/50 backdrop-blur-sm hover:border-gold hover:bg-royal-dark/80"
                   : "border-white/25 bg-black/20 backdrop-blur-md hover:border-gold/60 hover:bg-black/30"
             }`}
           >
@@ -104,7 +114,7 @@ export default function Navbar() {
                   mobileOpen
                     ? "translate-y-[7px] rotate-45 bg-gold"
                     : scrolled
-                      ? "bg-royal"
+                      ? "bg-gold-light"
                       : "bg-white/85"
                 }`}
               />
@@ -112,9 +122,7 @@ export default function Navbar() {
                 className={`absolute left-0 top-1/2 -translate-y-1/2 h-px transition-all duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
                   mobileOpen
                     ? "w-0 opacity-0"
-                    : scrolled
-                      ? "w-2/3 bg-royal group-hover:w-full"
-                      : "w-2/3 bg-gold-light group-hover:w-full"
+                    : "w-2/3 bg-gold-light group-hover:w-full"
                 }`}
               />
               <span
@@ -122,7 +130,7 @@ export default function Navbar() {
                   mobileOpen
                     ? "-translate-y-[7px] -rotate-45 bg-gold"
                     : scrolled
-                      ? "bg-royal"
+                      ? "bg-gold-light"
                       : "bg-white/85"
                 }`}
               />

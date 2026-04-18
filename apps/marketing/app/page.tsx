@@ -1,13 +1,13 @@
-import Navbar from "@/components/ui/Navbar";
-import Hero from "@/components/sections/Hero";
-import SaveTheDate from "@/components/sections/SaveTheDate";
-import OurStory from "@/components/sections/OurStory";
-import EventDetails from "@/components/sections/EventDetails";
-import RsvpCta from "@/components/sections/RsvpCta";
-import Gallery from "@/components/sections/Gallery";
-import Gift from "@/components/sections/Gift";
-import Footer from "@/components/sections/Footer";
-import ScrollToTop from "@/components/ui/ScrollToTop";
+import Navbar from "@/components/ui/navbar";
+import Hero from "@/components/sections/hero";
+import SaveTheDate from "@/components/sections/save-the-date";
+import OurStory from "@/components/sections/our-story";
+import EventDetails from "@/components/sections/event-details";
+import RsvpCta from "@/components/sections/rsvp-cta";
+import Gallery from "@/components/sections/gallery";
+import Gift from "@/components/sections/gift";
+import Footer from "@/components/sections/footer";
+import ScrollToTop from "@/components/ui/scroll-to-top";
 
 export default function Home() {
   return (

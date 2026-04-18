@@ -54,27 +54,12 @@ export default function Lightbox({
   const [progress, setProgress] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [stripOffset, setStripOffset] = useState(0);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Crossfade previous → current
-  const [crossfade, setCrossfade] = useState<{
-    from: number | null;
-    to: number;
-  }>({ from: null, to: currentIndex });
-
-  useEffect(() => {
-    setCrossfade((prev) => ({ from: prev.to, to: currentIndex }));
-    const t = window.setTimeout(() => {
-      setCrossfade((prev) => ({ from: null, to: prev.to }));
-    }, 900);
-    return () => window.clearTimeout(t);
-  }, [currentIndex]);
 
   // Audio helpers — smooth fade in/out
   const fadeAudioTo = useCallback((target: number, duration = AUDIO_FADE_MS) => {
@@ -145,12 +130,10 @@ export default function Lightbox({
   }, [isMuted, isPlaying, fadeAudioTo]);
 
   const goNext = useCallback(() => {
-    setDirection("next");
     onNext();
   }, [onNext]);
 
   const goPrev = useCallback(() => {
-    setDirection("prev");
     onPrev();
   }, [onPrev]);
 
@@ -158,10 +141,9 @@ export default function Lightbox({
     (index: number) => {
       if (!onSelect) return;
       if (index < 0 || index >= images.length) return;
-      setDirection(index > currentIndex ? "next" : "prev");
       onSelect(index);
     },
-    [onSelect, images.length, currentIndex],
+    [onSelect, images.length],
   );
 
   const handleKeyDown = useCallback(
@@ -269,10 +251,6 @@ export default function Lightbox({
   );
 
   const current = images[currentIndex];
-  const previous =
-    crossfade.from !== null && crossfade.from !== currentIndex
-      ? images[crossfade.from]
-      : null;
 
   if (!current) return null;
   if (!mounted) return null;
@@ -390,19 +368,6 @@ export default function Lightbox({
                 : "bg-white/5 hover:bg-gold/90 hover:text-royal-dark border border-gold/60 text-gold-light"
             }`}
           >
-            {!isPlaying && (
-              <>
-                <span
-                  aria-hidden
-                  className="absolute inset-0 rounded-full border border-gold/50 animate-[lightbox-ping_2.2s_ease-out_infinite] pointer-events-none"
-                />
-                <span
-                  aria-hidden
-                  className="absolute inset-0 rounded-full border border-gold/25 animate-[lightbox-ping_2.2s_ease-out_infinite] [animation-delay:1.1s] pointer-events-none"
-                />
-              </>
-            )}
-
             <span
               className={`relative z-[2] inline-flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full ${
                 isPlaying
@@ -503,46 +468,13 @@ export default function Lightbox({
           </svg>
         </button>
 
-        {/* Sliding image stack — direction-aware */}
+        {/* Image stage — no transition, instant swap */}
         <div
           className="relative w-full h-full max-w-[90vw] max-h-full flex flex-col items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="relative w-full flex-1 min-h-0 overflow-hidden">
-            {previous && (
-              <div
-                key={`prev-${crossfade.from}-${direction}`}
-                className="absolute inset-0 will-change-transform"
-                style={{
-                  animation: `${
-                    direction === "next"
-                      ? "lightbox-slide-out-left"
-                      : "lightbox-slide-out-right"
-                  } 700ms cubic-bezier(0.65, 0, 0.35, 1) forwards`,
-                }}
-                aria-hidden
-              >
-                <Image
-                  src={previous.src}
-                  alt=""
-                  fill
-                  className="object-contain"
-                  sizes="90vw"
-                  quality={88}
-                />
-              </div>
-            )}
-            <div
-              key={`current-${currentIndex}-${direction}`}
-              className="absolute inset-0 will-change-transform"
-              style={{
-                animation: `${
-                  direction === "next"
-                    ? "lightbox-slide-in-right"
-                    : "lightbox-slide-in-left"
-                } 700ms cubic-bezier(0.65, 0, 0.35, 1) forwards`,
-              }}
-            >
+            <div className="absolute inset-0">
               <Image
                 src={current.src}
                 alt={current.alt}
@@ -638,14 +570,7 @@ export default function Lightbox({
         {current.caption && (
           <p
             key={`caption-${currentIndex}`}
-            className="px-5 md:px-8 mb-3 font-serif italic text-white/75 text-sm md:text-base text-center will-change-transform"
-            style={{
-              animation: `${
-                direction === "next"
-                  ? "lightbox-caption-in-right"
-                  : "lightbox-caption-in-left"
-              } 600ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards`,
-            }}
+            className="px-5 md:px-8 mb-3 font-serif italic text-white/75 text-sm md:text-base text-center"
           >
             {current.caption}
           </p>

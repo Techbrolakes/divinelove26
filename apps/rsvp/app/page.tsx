@@ -9,7 +9,7 @@ import Image from "next/image";
 import { z } from "zod";
 import { Mail, User, CheckCircle2 } from "lucide-react";
 import { useTRPC } from "@/lib/trpc";
-import ConfettiEffect from "@/components/ui/ConfettiEffect";
+import ConfettiEffect from "@/components/ui/confetti-effect";
 
 const registerSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name").trim(),

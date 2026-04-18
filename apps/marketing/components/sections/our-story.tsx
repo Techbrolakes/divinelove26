@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import SplitReveal from "@/components/ui/SplitReveal";
-import Ornament from "@/components/ui/Ornament";
+import SplitReveal from "@/components/ui/split-reveal";
+import Ornament from "@/components/ui/ornament";
 import { STORY_PHOTOS } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 

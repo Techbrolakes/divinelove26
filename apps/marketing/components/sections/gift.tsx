@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import SplitReveal from "@/components/ui/SplitReveal";
+import SplitReveal from "@/components/ui/split-reveal";
 import {
   GIFT_ACCOUNTS,
   GIFT_BACKDROP,

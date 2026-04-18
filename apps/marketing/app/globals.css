@@ -125,43 +125,6 @@ html {
   display: none;
 }
 
-/* Lightbox image fade-in (legacy) */
-@keyframes lightbox-fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Lightbox slide transitions — direction aware */
-@keyframes lightbox-slide-in-right {
-  from { transform: translate3d(100%, 0, 0); opacity: 0.2; }
-  to   { transform: translate3d(0, 0, 0); opacity: 1; }
-}
-@keyframes lightbox-slide-in-left {
-  from { transform: translate3d(-100%, 0, 0); opacity: 0.2; }
-  to   { transform: translate3d(0, 0, 0); opacity: 1; }
-}
-@keyframes lightbox-slide-out-left {
-  from { transform: translate3d(0, 0, 0); opacity: 1; }
-  to   { transform: translate3d(-100%, 0, 0); opacity: 0; }
-}
-@keyframes lightbox-slide-out-right {
-  from { transform: translate3d(0, 0, 0); opacity: 1; }
-  to   { transform: translate3d(100%, 0, 0); opacity: 0; }
-}
-@keyframes lightbox-caption-in-right {
-  from { transform: translate3d(24px, 0, 0); opacity: 0; }
-  to   { transform: translate3d(0, 0, 0); opacity: 1; }
-}
-@keyframes lightbox-caption-in-left {
-  from { transform: translate3d(-24px, 0, 0); opacity: 0; }
-  to   { transform: translate3d(0, 0, 0); opacity: 1; }
-}
-
-/* Lightbox play-button attention pulse */
-@keyframes lightbox-ping {
-  0% { transform: scale(1); opacity: 0.7; }
-  80%, 100% { transform: scale(1.35); opacity: 0; }
-}
 
 /* Stationery border — double line */
 .stationery-border {

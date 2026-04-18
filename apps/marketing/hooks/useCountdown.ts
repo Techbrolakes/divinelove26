@@ -10,12 +10,21 @@ interface CountdownValues {
   isExpired: boolean;
 }
 
+const INITIAL: CountdownValues = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+  isExpired: false,
+};
+
 export function useCountdown(targetDate: Date): CountdownValues {
-  const [timeLeft, setTimeLeft] = useState<CountdownValues>(() =>
-    calculate(targetDate)
-  );
+  // Start with zeros so server-rendered HTML matches first client render —
+  // real values populate after mount, avoiding hydration mismatch.
+  const [timeLeft, setTimeLeft] = useState<CountdownValues>(INITIAL);
 
   useEffect(() => {
+    setTimeLeft(calculate(targetDate));
     const timer = setInterval(() => {
       setTimeLeft(calculate(targetDate));
     }, 1000);

@@ -1,4 +1,6 @@
-export const WEDDING_DATE = new Date("2026-06-20T14:00:00");
+// 2026-06-20 at 14:00 WAT (UTC+1) — anchored to Lagos so viewers in any timezone
+// count down to the same real-world moment.
+export const WEDDING_DATE = new Date("2026-06-20T14:00:00+01:00");
 
 export const COUPLE = {
   partner1: "Ikhioya David Ohiozoje",

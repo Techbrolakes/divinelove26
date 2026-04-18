@@ -134,14 +134,18 @@ export default function BackgroundMusic() {
           }
         }}
       />
-      <div className="fixed right-5 bottom-20 md:right-8 md:bottom-28 z-50 flex items-center gap-3">
+      <div className="fixed right-5 bottom-5 md:right-8 md:bottom-8 z-50 flex items-center gap-2 md:gap-3">
         <span
           aria-hidden
-          className={`hidden sm:inline-block font-sans text-[10px] tracking-[0.35em] uppercase text-gold-light/85 whitespace-nowrap transition-opacity duration-700 ${
-            pendingAutoplay && !isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
+          className={`inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-royal-dark/85 backdrop-blur-md px-3 py-1.5 font-sans text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.35em] uppercase text-gold-light whitespace-nowrap shadow-[0_6px_18px_rgba(0,0,0,0.35)] transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+            pendingAutoplay && !isPlaying
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 translate-x-2 pointer-events-none"
           }`}
         >
-          Tap anywhere for music
+          <span aria-hidden className="text-gold">♪</span>
+          <span className="md:hidden">Tap for music</span>
+          <span className="hidden md:inline">Tap anywhere for music</span>
         </span>
         <button
           type="button"

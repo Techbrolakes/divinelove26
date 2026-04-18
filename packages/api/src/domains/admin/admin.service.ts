@@ -1,64 +1,44 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, count, eq, sql } from "drizzle-orm";
 import type { Database } from "@repo/db";
-import { guests, rsvps } from "@repo/db/schema";
-import type { AddGuestInput } from "./admin.schema";
+import { guests } from "@repo/db/schema";
+import { sendInvitationEmail } from "@repo/email";
+import { badRequest, conflict, notFound, serverError } from "../../errors";
+
+const RSVP_URL = process.env["NEXT_PUBLIC_RSVP_URL"];
+const MARKETING_URL = process.env["NEXT_PUBLIC_MARKETING_URL"];
 
 export async function getStats(db: Database) {
-  const allGuests = await db.select({ id: guests.id }).from(guests);
-  const allRsvps = await db.select().from(rsvps);
+  const [row] = await db
+    .select({
+      total: count(),
+      invited: sql<number>`count(${guests.invitationSentAt})`.mapWith(Number),
+      checkedIn: sql<number>`count(${guests.checkedInAt})`.mapWith(Number),
+    })
+    .from(guests);
 
-  const attending = allRsvps.filter((r) => r.attending);
-  const declined = allRsvps.filter((r) => !r.attending);
-  const totalGuests = allGuests.length;
-  const pending = totalGuests - allRsvps.length;
-
-  const mealCounts: Record<string, number> = {};
-  for (const r of attending) {
-    if (r.mealChoice) {
-      mealCounts[r.mealChoice] = (mealCounts[r.mealChoice] ?? 0) + 1;
-    }
-    if (r.plusOneMealChoice) {
-      mealCounts[r.plusOneMealChoice] =
-        (mealCounts[r.plusOneMealChoice] ?? 0) + 1;
-    }
-  }
+  const total = row?.total ?? 0;
+  const invited = row?.invited ?? 0;
 
   return {
-    total: totalGuests,
-    attending: attending.length,
-    declined: declined.length,
-    pending,
-    mealCounts,
+    total,
+    invited,
+    checkedIn: row?.checkedIn ?? 0,
+    pending: total - invited,
   };
 }
 
 export async function getGuests(db: Database) {
-  const rows = await db
-    .select()
-    .from(guests)
-    .leftJoin(rsvps, eq(rsvps.guestId, guests.id))
-    .orderBy(asc(guests.lastName));
-
-  return rows.map((row) => ({
-    ...row.guests,
-    rsvp: row.rsvps,
-  }));
-}
-
-export async function addGuest(db: Database, input: AddGuestInput) {
-  const [created] = await db
-    .insert(guests)
-    .values({
-      firstName: input.firstName,
-      lastName: input.lastName,
-      email: input.email ?? null,
-      phone: input.phone ?? null,
-      partyName: input.partyName ?? null,
-      maxPlusOnes: input.maxPlusOnes ?? 0,
+  return db
+    .select({
+      id: guests.id,
+      fullName: guests.fullName,
+      email: guests.email,
+      invitationSentAt: guests.invitationSentAt,
+      checkedInAt: guests.checkedInAt,
+      createdAt: guests.createdAt,
     })
-    .returning();
-  if (!created) throw new Error("Failed to create guest");
-  return created;
+    .from(guests)
+    .orderBy(asc(guests.createdAt));
 }
 
 export async function deleteGuest(db: Database, guestId: string) {
@@ -66,28 +46,110 @@ export async function deleteGuest(db: Database, guestId: string) {
   return { success: true };
 }
 
-export async function importGuestsFromCsv(db: Database, csvText: string) {
-  const lines = csvText.trim().split("\n");
-  const headerLine = lines[0];
-  if (!headerLine) return { count: 0 };
-  const headers = headerLine.split(",").map((h) => h.trim().toLowerCase());
+function generateCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
-  const rows = lines.slice(1).map((line) => {
-    const values = line.split(",").map((v) => v.trim());
-    const row: Record<string, string> = {};
-    headers.forEach((h, i) => {
-      row[h] = values[i] ?? "";
+async function generateUniqueCode(db: Database): Promise<string> {
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const code = generateCode();
+    const existing = await db.query.guests.findFirst({
+      where: eq(guests.invitationCode, code),
+      columns: { id: true },
     });
-    return {
-      firstName: row["first_name"] || row["firstname"] || "",
-      lastName: row["last_name"] || row["lastname"] || "",
-      email: row["email"] || null,
-      phone: row["phone"] || null,
-      partyName: row["party_name"] || row["partyname"] || null,
-      maxPlusOnes: Number(row["max_plus_ones"] || row["plusones"]) || 0,
-    };
+    if (!existing) return code;
+  }
+  serverError("Could not generate a unique invitation code");
+}
+
+export async function sendInvitation(db: Database, guestId: string) {
+  const guest = await db.query.guests.findFirst({
+    where: eq(guests.id, guestId),
+  });
+  if (!guest) notFound("Guest");
+
+  const code = guest.invitationCode ?? (await generateUniqueCode(db));
+
+  const dayEvents = await db.query.events.findMany({
+    orderBy: (e, { asc }) => [asc(e.sortOrder), asc(e.date)],
   });
 
-  if (rows.length > 0) await db.insert(guests).values(rows);
-  return { count: rows.length };
+  const monogramUrl = MARKETING_URL
+    ? `${MARKETING_URL.replace(/\/$/, "")}/logo/monogram-white-on-blue.jpeg`
+    : undefined;
+
+  if (!RSVP_URL) {
+    serverError(
+      "NEXT_PUBLIC_RSVP_URL must be set to generate invitation QR URLs",
+    );
+  }
+  const qrImageUrl = `${RSVP_URL.replace(/\/$/, "")}/api/qr/${code}`;
+
+  const result = await sendInvitationEmail({
+    to: guest.email,
+    fullName: guest.fullName,
+    code,
+    qrImageUrl,
+    events: dayEvents.map((e) => ({
+      name: e.name,
+      date: e.date,
+      endTime: e.endTime,
+      venueName: e.venueName,
+      venueAddress: e.venueAddress,
+      dressCode: e.dressCode,
+      description: e.description,
+    })),
+    monogramUrl,
+    rsvpUrl: RSVP_URL,
+  });
+
+  if (!result.success) {
+    serverError(result.error ?? "Failed to send invitation email");
+  }
+
+  const [updated] = await db
+    .update(guests)
+    .set({
+      invitationCode: code,
+      invitationSentAt: new Date(),
+    })
+    .where(eq(guests.id, guestId))
+    .returning({
+      id: guests.id,
+      invitationCode: guests.invitationCode,
+      invitationSentAt: guests.invitationSentAt,
+    });
+
+  if (!updated) serverError("Failed to record invitation");
+
+  return updated;
+}
+
+export async function validateCode(db: Database, code: string) {
+  const guest = await db.query.guests.findFirst({
+    where: eq(guests.invitationCode, code),
+  });
+
+  if (!guest) badRequest("No invitation matches this code.");
+  if (!guest.invitationSentAt) {
+    badRequest("Invitation has not been sent for this guest.");
+  }
+  if (guest.checkedInAt) {
+    conflict(`${guest.fullName} has already checked in.`);
+  }
+
+  const [updated] = await db
+    .update(guests)
+    .set({ checkedInAt: new Date() })
+    .where(eq(guests.id, guest.id))
+    .returning({
+      id: guests.id,
+      fullName: guests.fullName,
+      email: guests.email,
+      checkedInAt: guests.checkedInAt,
+    });
+
+  if (!updated) serverError("Failed to mark check-in");
+
+  return updated;
 }

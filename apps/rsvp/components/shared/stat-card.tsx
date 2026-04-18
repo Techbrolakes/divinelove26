@@ -8,11 +8,6 @@ interface StatCardProps {
   value: string | number;
   icon: LucideIcon;
   description?: string;
-  trend?: {
-    value: number;
-    label?: string;
-    isPositive: boolean;
-  };
   isLoading?: boolean;
   className?: string;
 }
@@ -22,55 +17,41 @@ export function StatCard({
   value,
   icon: Icon,
   description,
-  trend,
   isLoading,
   className,
 }: StatCardProps) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-gray-200 bg-white p-5",
+        "group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-300 hover:border-royal/30 hover:-translate-y-0.5",
+        "shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.12)]",
         className,
       )}
     >
+      {/* Top accent — royal bar that slides in on hover */}
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-royal via-royal-light to-royal opacity-60 group-hover:opacity-100 transition-opacity" />
+
       <div className="flex items-start justify-between gap-4">
-        <div className="space-y-1.5 flex-1 min-w-0">
-          <p className="text-[12px] font-medium text-gray-400 uppercase tracking-wide">
+        <div className="space-y-2.5 flex-1 min-w-0">
+          <p className="font-sans text-[10px] font-semibold tracking-[0.2em] uppercase text-gray-400">
             {title}
           </p>
           {isLoading ? (
-            <div className="h-7 w-16 animate-pulse rounded bg-gray-100" />
+            <div className="h-10 w-20 animate-pulse rounded bg-gray-100" />
           ) : (
-            <p className="text-2xl font-bold text-gray-900 font-heading tabular-nums">
+            <p className="font-serif text-[40px] leading-none font-light text-royal-dark tabular-nums">
               {value}
             </p>
           )}
-          <div className="flex items-center gap-2 min-h-[16px]">
-            {description && (
-              <p className="text-[11px] text-gray-400 truncate">
-                {description}
-              </p>
-            )}
-            {trend && !isLoading && (
-              <span
-                className={cn(
-                  "inline-flex items-center gap-0.5 text-[11px] font-semibold shrink-0 rounded-full px-1.5 py-0.5",
-                  trend.isPositive
-                    ? "text-emerald-600 bg-emerald-50"
-                    : "text-red-500 bg-red-50",
-                )}
-              >
-                {trend.isPositive ? "+" : "-"}
-                {trend.label
-                  ? `${Math.abs(trend.value)} ${trend.label}`
-                  : `${Math.abs(trend.value)}%`}
-              </span>
-            )}
-          </div>
+          {description && (
+            <p className="font-sans text-[12px] text-gray-500 truncate">
+              {description}
+            </p>
+          )}
         </div>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 shrink-0">
-          <Icon className="h-[18px] w-[18px] text-primary" />
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-royal-50 to-royal-100/60 shrink-0 ring-1 ring-royal-100 group-hover:from-royal-100 group-hover:to-royal-50 transition-colors">
+          <Icon className="h-5 w-5 text-royal" strokeWidth={1.75} />
         </div>
       </div>
     </div>

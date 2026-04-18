@@ -5,7 +5,9 @@ import OurStory from "@/components/sections/OurStory";
 import EventDetails from "@/components/sections/EventDetails";
 import RsvpCta from "@/components/sections/RsvpCta";
 import Gallery from "@/components/sections/Gallery";
+import Gift from "@/components/sections/Gift";
 import Footer from "@/components/sections/Footer";
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 export default function Home() {
   return (
@@ -13,13 +15,15 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <SaveTheDate />
+        {/* <SaveTheDate /> */}
         <OurStory />
-        <EventDetails />
         <Gallery />
+        <Gift />
+        <EventDetails />
         <RsvpCta />
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

@@ -34,11 +34,11 @@ export default function DashboardLayout({
         <div
           className={cn(
             "transition-all duration-300",
-            collapsed ? "md:ml-[72px]" : "md:ml-[250px]",
+            collapsed ? "md:ml-[72px]" : "md:ml-[260px]",
           )}
         >
           <AdminHeader onMenuClick={() => setMobileOpen(true)} />
-          <main className="px-3 py-4 sm:px-6 sm:py-6 overflow-x-hidden">
+          <main className="px-3 py-6 sm:px-8 sm:py-8 overflow-x-hidden">
             {children}
           </main>
         </div>

@@ -1,66 +1,28 @@
-import { and, eq, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import type { Database } from "@repo/db";
-import { guests, rsvps } from "@repo/db/schema";
-import { notFound } from "../../errors";
-import type { GuestLookupInput, RsvpInput } from "./rsvp.schema";
+import { guests } from "@repo/db/schema";
+import { conflict, serverError } from "../../errors";
+import type { RegisterInput } from "./rsvp.schema";
 
-export async function lookupGuest(db: Database, input: GuestLookupInput) {
-  const guest = await db.query.guests.findFirst({
-    where: and(
-      sql`lower(${guests.firstName}) = lower(${input.firstName})`,
-      sql`lower(${guests.lastName}) = lower(${input.lastName})`,
-    ),
-    columns: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      partyName: true,
-      maxPlusOnes: true,
-    },
-  });
-
-  if (!guest) {
-    notFound(
-      "We couldn't find your name on the guest list. Please check the spelling or contact us.",
-    );
-  }
-
-  return guest;
-}
-
-export async function submitRsvp(db: Database, input: RsvpInput) {
+export async function register(db: Database, input: RegisterInput) {
   const existing = await db.query.guests.findFirst({
-    where: eq(guests.id, input.guestId),
+    where: sql`lower(${guests.email}) = ${input.email}`,
     columns: { id: true },
   });
-  if (!existing) notFound("Guest");
 
-  await db
-    .insert(rsvps)
+  if (existing) {
+    conflict("This email has already registered.");
+  }
+
+  const [created] = await db
+    .insert(guests)
     .values({
-      guestId: input.guestId,
-      attending: input.attending,
-      mealChoice: input.mealChoice ?? null,
-      dietaryRestrictions: input.dietaryRestrictions ?? null,
-      plusOneName: input.plusOneName ?? null,
-      plusOneMealChoice: input.plusOneMealChoice ?? null,
-      plusOneDietary: input.plusOneDietary ?? null,
-      notes: input.notes ?? null,
-      updatedAt: new Date(),
+      fullName: input.fullName,
+      email: input.email,
     })
-    .onConflictDoUpdate({
-      target: rsvps.guestId,
-      set: {
-        attending: input.attending,
-        mealChoice: input.mealChoice ?? null,
-        dietaryRestrictions: input.dietaryRestrictions ?? null,
-        plusOneName: input.plusOneName ?? null,
-        plusOneMealChoice: input.plusOneMealChoice ?? null,
-        plusOneDietary: input.plusOneDietary ?? null,
-        notes: input.notes ?? null,
-        updatedAt: new Date(),
-      },
-    });
+    .returning({ id: guests.id });
 
-  return { success: true };
+  if (!created) serverError("Failed to save registration");
+
+  return { success: true, guestId: created.id };
 }

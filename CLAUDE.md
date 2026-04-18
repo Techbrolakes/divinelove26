@@ -1,5 +1,3 @@
-@AGENTS.md
-
 # Divine Love 26 — Monorepo
 
 Turborepo + pnpm workspaces. Three Next.js apps sharing a tRPC backend and Drizzle/Postgres (Neon) DB.

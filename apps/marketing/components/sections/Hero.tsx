@@ -6,7 +6,7 @@ import CountdownTimer from "@/components/ui/CountdownTimer";
 import SplitReveal from "@/components/ui/SplitReveal";
 import Ornament from "@/components/ui/Ornament";
 import MagneticButton from "@/components/ui/MagneticButton";
-import { COUPLE } from "@/lib/constants";
+import { COUPLE, HERO_SLIDES } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 
 const RSVP_URL = process.env.NEXT_PUBLIC_RSVP_URL || "/rsvp";
@@ -23,9 +23,45 @@ export default function Hero() {
       gsap.set("[data-hero-name] [data-char]", { y: "100%" });
       gsap.set("[data-hero-date] [data-char]", { y: "100%" });
 
+      // Crossfade between hero slides
+      const slides = gsap.utils.toArray<HTMLElement>("[data-hero-slide]");
+      if (slides.length > 1) {
+        const first = slides[0];
+        gsap.set(slides, { opacity: 0 });
+        if (first) gsap.set(first, { opacity: 1 });
+
+        const slideTl = gsap.timeline({ repeat: -1, defaults: { ease: "power2.inOut" } });
+        slides.forEach((slide, i) => {
+          const next = slides[(i + 1) % slides.length];
+          if (!next) return;
+          slideTl
+            .to({}, { duration: 5 })
+            .to(slide, { opacity: 0, duration: 2 }, ">")
+            .to(next, { opacity: 1, duration: 2 }, "<");
+        });
+
+        // Continuous slow Ken Burns across all slides
+        slides.forEach((slide, i) => {
+          const img = slide.querySelector<HTMLElement>("[data-hero-slide-img]");
+          if (!img) return;
+          gsap.fromTo(
+            img,
+            { scale: 1.08, xPercent: i % 2 === 0 ? -2 : 2 },
+            {
+              scale: 1.18,
+              xPercent: i % 2 === 0 ? 2 : -2,
+              duration: 14,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+            },
+          );
+        });
+      }
+
       const tl = gsap.timeline({
         defaults: { ease: "expo.out" },
-        delay: 0.15,
+        delay: 0.35,
       });
 
       tl.to("[data-hero-ornament]", {
@@ -158,16 +194,50 @@ export default function Hero() {
         data-hero-bg
         className="absolute inset-0 will-change-transform"
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-[#041d4a] via-royal-dark to-royal" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(168,180,196,0.12)_0%,_transparent_60%)]" />
+        {/* Cinematic photo slides — crossfade with ken burns */}
+        <div className="absolute inset-0">
+          {HERO_SLIDES.map((src, i) => (
+            <div
+              key={src}
+              data-hero-slide
+              className="absolute inset-0"
+            >
+              <div
+                data-hero-slide-img
+                className="absolute inset-0 will-change-transform"
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                  priority={i === 0}
+                  quality={90}
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tone the photo — royal blue duotone wash */}
+        <div className="absolute inset-0 bg-[#041d4a] mix-blend-color opacity-70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-royal-dark/70 via-royal/40 to-royal-dark/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(201,168,76,0.10)_0%,_transparent_55%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+
+        {/* Film-grain diamond lattice (very subtle) */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0L40 20L20 40L0 20Z' fill='none' stroke='white' stroke-width='0.5'/%3E%3C/svg%3E")`,
             backgroundSize: "40px 40px",
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30" />
+
+        {/* Vignette corners */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_45%,_rgba(0,0,0,0.55)_100%)]" />
       </div>
 
       <div
@@ -176,7 +246,7 @@ export default function Hero() {
       >
         <div
           data-hero-ornament
-          className="mb-8 origin-center opacity-0 scale-x-0 text-gold-light/70"
+          className="mb-8 origin-center opacity-0 scale-x-0 text-gold-light/80"
           style={{ willChange: "transform, opacity" }}
         >
           <Ornament variant="wave" className="w-56 md:w-72" />
@@ -186,19 +256,19 @@ export default function Hero() {
           text="Save · the · Date"
           as="p"
           data-hero-label
-          className="font-sans text-[10px] md:text-xs uppercase tracking-[0.55em] text-gold-light/80 mb-10 md:mb-14"
+          className="font-sans text-[10px] md:text-xs uppercase tracking-[0.55em] text-gold-light/90 mb-10 md:mb-14 drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
         />
 
         <div className="relative mb-10 md:mb-14">
           <div
             data-hero-seal-glow
             aria-hidden
-            className="absolute -inset-12 md:-inset-16 rounded-full bg-gold/[0.08] blur-3xl opacity-0"
+            className="absolute -inset-16 md:-inset-24 rounded-full bg-gold/[0.10] blur-3xl opacity-0"
           />
           <div
             data-hero-seal-glow
             aria-hidden
-            className="absolute -inset-4 md:-inset-6 rounded-full bg-gold/[0.12] blur-xl opacity-0"
+            className="absolute -inset-4 md:-inset-8 rounded-full bg-gold/[0.18] blur-2xl opacity-0"
           />
           <div
             data-hero-seal
@@ -210,13 +280,13 @@ export default function Hero() {
               alt="Divine Love Monogram"
               width={240}
               height={240}
-              className="relative w-[150px] h-[150px] md:w-[220px] md:h-[220px] rounded-full object-cover shadow-[0_0_80px_rgba(168,180,196,0.18),0_28px_80px_rgba(0,0,0,0.45)] ring-1 ring-white/10"
+              className="relative w-[150px] h-[150px] md:w-[220px] md:h-[220px] rounded-full object-cover shadow-[0_0_80px_rgba(168,180,196,0.25),0_28px_80px_rgba(0,0,0,0.55)] ring-1 ring-gold/30"
               priority
             />
           </div>
         </div>
 
-        <h1 className="font-serif leading-none">
+        <h1 className="font-serif leading-none drop-shadow-[0_6px_24px_rgba(0,0,0,0.55)]">
           <SplitReveal
             text={COUPLE.partner1}
             as="span"
@@ -229,11 +299,11 @@ export default function Hero() {
             className="block my-3 md:my-5 origin-center"
           >
             <span className="inline-flex items-center gap-4 md:gap-6">
-              <span className="h-px w-10 md:w-16 bg-gradient-to-r from-transparent to-gold/60" />
+              <span className="h-px w-10 md:w-16 bg-gradient-to-r from-transparent to-gold/70" />
               <span className="text-2xl md:text-3xl lg:text-4xl font-light italic text-gold gold-shimmer">
                 &amp;
               </span>
-              <span className="h-px w-10 md:w-16 bg-gradient-to-l from-transparent to-gold/60" />
+              <span className="h-px w-10 md:w-16 bg-gradient-to-l from-transparent to-gold/70" />
             </span>
           </span>
 
@@ -245,15 +315,15 @@ export default function Hero() {
           />
         </h1>
 
-        <div className="mt-10 md:mt-12 flex items-center gap-4 text-white/70">
-          <span className="h-px w-8 bg-white/20" />
+        <div className="mt-10 md:mt-12 flex items-center gap-4 text-white/80">
+          <span className="h-px w-8 bg-white/30" />
           <SplitReveal
             text="20 · 06 · 26"
             as="p"
             data-hero-date
-            className="font-serif text-lg md:text-2xl italic tracking-[0.25em]"
+            className="font-serif text-lg md:text-2xl italic tracking-[0.25em] drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
           />
-          <span className="h-px w-8 bg-white/20" />
+          <span className="h-px w-8 bg-white/30" />
         </div>
 
         <div data-hero-countdown className="mt-12 md:mt-16 opacity-0">
@@ -266,8 +336,8 @@ export default function Hero() {
             strength={0.35}
             className="group relative"
           >
-            <span className="relative flex items-center gap-3 rounded-full border border-gold/40 bg-white/[0.04] px-9 py-3.5 font-sans text-[11px] uppercase tracking-[0.35em] text-gold-light/90 backdrop-blur-sm transition-colors duration-500 hover:border-gold hover:text-white">
-              <span className="h-px w-4 bg-gold-light/50 transition-all duration-500 group-hover:w-8 group-hover:bg-gold" />
+            <span className="relative flex items-center gap-3 rounded-full border border-gold/50 bg-black/25 px-9 py-3.5 font-sans text-[11px] uppercase tracking-[0.35em] text-gold-light backdrop-blur-md transition-colors duration-500 hover:border-gold hover:text-white hover:bg-black/40">
+              <span className="h-px w-4 bg-gold-light/60 transition-all duration-500 group-hover:w-8 group-hover:bg-gold" />
               Respond to the invitation
             </span>
           </MagneticButton>
@@ -275,7 +345,7 @@ export default function Hero() {
 
         <p
           data-hero-hash
-          className="font-sans text-[10px] tracking-[0.45em] text-gold-light/40 mt-10 opacity-0"
+          className="font-sans text-[10px] tracking-[0.45em] text-gold-light/60 mt-10 opacity-0"
         >
           {COUPLE.hashtag}
         </p>
@@ -285,12 +355,12 @@ export default function Hero() {
           className="absolute bottom-8 opacity-0"
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/30">
+            <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/50">
               Scroll
             </span>
             <div
               data-hero-scroll-line
-              className="w-px h-8 bg-gradient-to-b from-gold/50 to-transparent"
+              className="w-px h-8 bg-gradient-to-b from-gold/60 to-transparent"
             />
           </div>
         </div>

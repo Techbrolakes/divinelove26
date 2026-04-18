@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getAuthToken } from "@/lib/auth";
 import { useTRPC } from "@/lib/trpc";
 import { useQuery } from "@tanstack/react-query";
+import { BrandLoader } from "@/components/ui/brand-loader";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -41,12 +42,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         aria-live="polite"
         aria-busy="true"
       >
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-gray-900" />
-          <p className="text-[13px] font-medium text-gray-500">
-            Loading...
-          </p>
-        </div>
+        <BrandLoader size="md" label="Loading" />
       </div>
     );
   }

@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import SplitReveal from "@/components/ui/SplitReveal";
 import Ornament from "@/components/ui/Ornament";
+import { EVENTS_BACKDROP } from "@/lib/constants";
 import { useGSAP, gsap, ScrollTrigger } from "@/lib/gsap";
 
 const EVENTS = [
@@ -16,6 +18,7 @@ const EVENTS = [
     description:
       "Join us as we exchange vows and begin our journey together as one.",
     label: "The Ceremony",
+    photo: "/gallery/prewedding-06.jpg",
   },
   {
     name: "Reception",
@@ -27,6 +30,7 @@ const EVENTS = [
     description:
       "Dinner, dancing, and celebration. We can't wait to share this joyous evening with you.",
     label: "The Reception",
+    photo: "/gallery/prewedding-16.jpg",
   },
 ];
 
@@ -120,6 +124,22 @@ export default function EventDetails() {
       <div className="absolute inset-0 bg-gradient-to-b from-cream via-ivory to-cream" />
       <div className="absolute inset-0 noise-overlay" />
 
+      {/* Faint photo accent top-band — gives the creamy section an anchor */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-[55%] pointer-events-none overflow-hidden"
+      >
+        <Image
+          src={EVENTS_BACKDROP}
+          alt=""
+          fill
+          className="object-cover opacity-[0.09]"
+          sizes="100vw"
+          quality={70}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-cream/40 via-cream/70 to-cream" />
+      </div>
+
       <div className="relative z-10 max-w-5xl mx-auto">
         <div className="text-center mb-20 md:mb-24">
           <SplitReveal
@@ -150,13 +170,31 @@ export default function EventDetails() {
               className="group relative opacity-0"
             >
               <div className="relative bg-white rounded-xl overflow-hidden shadow-[0_2px_20px_rgba(11,61,145,0.06)] hover:shadow-[0_18px_60px_rgba(11,61,145,0.14)] transition-shadow duration-700 stationery-border">
-                <div className="bg-gradient-to-r from-royal-dark via-royal to-royal-dark px-8 py-7 text-center">
-                  <p className="font-sans text-[9px] tracking-[0.45em] uppercase text-gold-light/70 mb-3">
-                    {event.label}
-                  </p>
-                  <h3 className="font-serif text-3xl md:text-4xl text-white font-light tracking-wide">
-                    {event.name}
-                  </h3>
+                <div className="relative h-56 md:h-64 overflow-hidden">
+                  <Image
+                    src={event.photo}
+                    alt=""
+                    fill
+                    className="object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.06]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={86}
+                    aria-hidden="true"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-royal-dark/75 via-royal/60 to-royal-dark/90" />
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(201,168,76,0.12)_0%,_transparent_65%)]" />
+                  <div className="relative z-[2] h-full flex flex-col items-center justify-center px-8 py-7 text-center">
+                    <p className="font-sans text-[9px] tracking-[0.45em] uppercase text-gold-light/80 mb-3">
+                      {event.label}
+                    </p>
+                    <h3 className="font-serif text-3xl md:text-4xl text-white font-light tracking-wide drop-shadow-[0_4px_18px_rgba(0,0,0,0.55)]">
+                      {event.name}
+                    </h3>
+                    <div className="mt-3 flex items-center gap-3">
+                      <span className="h-px w-8 bg-gold/50" />
+                      <span className="w-1.5 h-1.5 rotate-45 bg-gold/80" />
+                      <span className="h-px w-8 bg-gold/50" />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="px-8 py-10 md:px-12 md:py-12 text-center">

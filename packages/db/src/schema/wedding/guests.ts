@@ -1,4 +1,4 @@
-import { pgTable, text, smallint, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { id, createdAtOnly } from "../helpers";
 
@@ -6,20 +6,15 @@ export const guests = pgTable(
   "guests",
   {
     id: id(),
-    firstName: text("first_name").notNull(),
-    lastName: text("last_name").notNull(),
-    email: text("email"),
-    phone: text("phone"),
-    partyName: text("party_name"),
-    maxPlusOnes: smallint("max_plus_ones").default(0),
-    tableNumber: smallint("table_number"),
+    fullName: text("full_name").notNull(),
+    email: text("email").notNull(),
+    invitationCode: text("invitation_code").unique(),
+    invitationSentAt: timestamp("invitation_sent_at", { withTimezone: true }),
+    checkedInAt: timestamp("checked_in_at", { withTimezone: true }),
     ...createdAtOnly(),
   },
   (table) => ({
-    nameUnique: uniqueIndex("guests_name_unique").on(
-      sql`lower(${table.firstName})`,
-      sql`lower(${table.lastName})`,
-    ),
+    emailUnique: uniqueIndex("guests_email_unique").on(sql`lower(${table.email})`),
   }),
 );
 

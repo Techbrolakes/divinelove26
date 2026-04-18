@@ -1,10 +1,5 @@
-import { z } from "zod";
 import { router, adminProcedure } from "../../trpc";
-import {
-  addGuestSchema,
-  deleteGuestSchema,
-  importCsvSchema,
-} from "./admin.schema";
+import { guestIdSchema, validateCodeSchema } from "./admin.schema";
 import * as adminService from "./admin.service";
 
 export const adminRouter = router({
@@ -12,23 +7,23 @@ export const adminRouter = router({
 
   getGuests: adminProcedure.query(({ ctx }) => adminService.getGuests(ctx.db)),
 
-  addGuest: adminProcedure
-    .input(addGuestSchema)
-    .mutation(({ ctx, input }) => adminService.addGuest(ctx.db, input)),
-
   deleteGuest: adminProcedure
-    .input(deleteGuestSchema)
+    .input(guestIdSchema)
     .mutation(({ ctx, input }) =>
       adminService.deleteGuest(ctx.db, input.guestId),
     ),
 
-  importGuestsFromCsv: adminProcedure
-    .input(importCsvSchema)
+  sendInvitation: adminProcedure
+    .input(guestIdSchema)
     .mutation(({ ctx, input }) =>
-      adminService.importGuestsFromCsv(ctx.db, input.csvText),
+      adminService.sendInvitation(ctx.db, input.guestId),
+    ),
+
+  validateCode: adminProcedure
+    .input(validateCodeSchema)
+    .mutation(({ ctx, input }) =>
+      adminService.validateCode(ctx.db, input.code),
     ),
 });
 
 export type AdminRouter = typeof adminRouter;
-// silence unused z warning — keep import for future guest-id query helpers
-void z;

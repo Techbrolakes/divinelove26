@@ -5,7 +5,8 @@
   "private": true,
   "exports": {
     ".": "./dist/index.js",
-    "./send": "./dist/send.js"
+    "./send": "./dist/send.js",
+    "./templates/invitation": "./dist/templates/invitation.js"
   },
   "scripts": {
     "build": "tsc",

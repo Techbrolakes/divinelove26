@@ -8,6 +8,7 @@ import Gallery from "@/components/sections/gallery";
 import Gift from "@/components/sections/gift";
 import Footer from "@/components/sections/footer";
 import ScrollToTop from "@/components/ui/scroll-to-top";
+import BackgroundMusic from "@/components/ui/background-music";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <RsvpCta />
       </main>
       <Footer />
+      <BackgroundMusic />
       <ScrollToTop />
     </>
   );

@@ -125,6 +125,12 @@ html {
   display: none;
 }
 
+/* Background music — sound-wave bars */
+@keyframes music-wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1); }
+}
+
 
 /* Stationery border — double line */
 .stationery-border {

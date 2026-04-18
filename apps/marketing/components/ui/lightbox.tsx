@@ -104,10 +104,12 @@ export default function Lightbox({
       /* autoplay blocked — user will click again */
     });
     fadeAudioTo(isMuted ? 0 : TARGET_VOLUME);
+    window.dispatchEvent(new Event("lightbox-audio-start"));
   }, [fadeAudioTo, isMuted]);
 
   const stopAudio = useCallback(() => {
     fadeAudioTo(0);
+    window.dispatchEvent(new Event("lightbox-audio-stop"));
   }, [fadeAudioTo]);
 
   const togglePlay = useCallback(() => {

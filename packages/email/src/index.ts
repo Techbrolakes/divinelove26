@@ -7,4 +7,8 @@ export {
 
 export { VerificationOTPEmail } from "./templates/verification-otp";
 export { WelcomeEmail } from "./templates/welcome";
-export { InvitationEmail, type InvitationEvent } from "./templates/invitation";
+export { InvitationConfirmationEmail } from "./templates/invitation-confirmation";
+export {
+  renderInvitationPDF,
+  type InvitationPDFEvent,
+} from "./pdf/invitation-pdf";

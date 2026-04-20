@@ -1,8 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  Monsieur_La_Doulaise,
+} from "next/font/google";
 import { Providers } from "@/providers/trpc-provider";
-import { SmoothScroll } from "@/providers/smooth-scroll";
+import SceneBackdrop from "@/components/ui/scene-backdrop";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -15,6 +19,13 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
+  display: "swap",
+});
+
+const monsieur = Monsieur_La_Doulaise({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -36,12 +47,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${dmSans.variable} ${monsieur.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Providers>
-          <SmoothScroll>{children}</SmoothScroll>
-        </Providers>
+      <body className="relative h-screen overflow-hidden">
+        <SceneBackdrop />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

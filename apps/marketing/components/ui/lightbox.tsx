@@ -198,11 +198,11 @@ export default function Lightbox({
 
   // Cleanup audio on unmount
   useEffect(() => {
+    const audio = audioRef.current;
     return () => {
       if (audioFadeRafRef.current !== null) {
         cancelAnimationFrame(audioFadeRafRef.current);
       }
-      const audio = audioRef.current;
       if (audio) {
         audio.pause();
         audio.src = "";

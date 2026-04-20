@@ -5,7 +5,6 @@ import { sendInvitationEmail } from "@repo/email";
 import { badRequest, conflict, notFound, serverError } from "../../errors";
 
 const RSVP_URL = process.env["NEXT_PUBLIC_RSVP_URL"];
-const MARKETING_URL = process.env["NEXT_PUBLIC_MARKETING_URL"];
 
 export async function getStats(db: Database) {
   const [row] = await db
@@ -74,22 +73,10 @@ export async function sendInvitation(db: Database, guestId: string) {
     orderBy: (e, { asc }) => [asc(e.sortOrder), asc(e.date)],
   });
 
-  const monogramUrl = MARKETING_URL
-    ? `${MARKETING_URL.replace(/\/$/, "")}/logo/monogram-white-on-blue.jpeg`
-    : undefined;
-
-  if (!RSVP_URL) {
-    serverError(
-      "NEXT_PUBLIC_RSVP_URL must be set to generate invitation QR URLs",
-    );
-  }
-  const qrImageUrl = `${RSVP_URL.replace(/\/$/, "")}/api/qr/${code}`;
-
   const result = await sendInvitationEmail({
     to: guest.email,
     fullName: guest.fullName,
     code,
-    qrImageUrl,
     events: dayEvents.map((e) => ({
       name: e.name,
       date: e.date,
@@ -99,7 +86,6 @@ export async function sendInvitation(db: Database, guestId: string) {
       dressCode: e.dressCode,
       description: e.description,
     })),
-    monogramUrl,
     rsvpUrl: RSVP_URL,
   });
 

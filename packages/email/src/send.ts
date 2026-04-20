@@ -2,7 +2,11 @@ import { Resend } from "resend";
 import { env } from "@repo/env";
 import { VerificationOTPEmail } from "./templates/verification-otp";
 import { WelcomeEmail } from "./templates/welcome";
-import { InvitationEmail, type InvitationEvent } from "./templates/invitation";
+import { InvitationConfirmationEmail } from "./templates/invitation-confirmation";
+import {
+  renderInvitationPDF,
+  type InvitationPDFEvent,
+} from "./pdf/invitation-pdf";
 
 let _resend: Resend | null = null;
 
@@ -70,37 +74,51 @@ export interface SendInvitationParams {
   to: string;
   fullName: string;
   code: string;
-  /** Absolute HTTPS URL to the QR PNG (e.g. https://rsvp.example.com/api/qr/123456). */
-  qrImageUrl: string;
-  events?: InvitationEvent[];
-  monogramUrl?: string;
+  events?: InvitationPDFEvent[];
   rsvpUrl?: string;
+  coupleNames?: string;
+  weddingDateLabel?: string;
 }
 
 export async function sendInvitationEmail({
   to,
   fullName,
   code,
-  qrImageUrl,
   events,
-  monogramUrl,
   rsvpUrl,
+  coupleNames = "Ikhioya & Idah",
+  weddingDateLabel = "Saturday, 20 June 2026",
 }: SendInvitationParams): Promise<{ success: boolean; error?: string }> {
   try {
+    const pdfBuffer = await renderInvitationPDF({
+      fullName,
+      code,
+      events,
+      coupleNames,
+      weddingDateLabel,
+    });
+
     const firstName = fullName.trim().split(/\s+/)[0] ?? fullName;
+    const pdfFilename = `${firstName}-${coupleNames.replace(/[^a-zA-Z0-9]+/g, "-")}-invitation.pdf`;
 
     const { error } = await getResend().emails.send({
       from: getFromEmail(),
       to,
-      subject: `${firstName}, you are cordially invited — Ikhioya & Idah, 20 June 2026`,
-      react: InvitationEmail({
+      subject: `Your invitation — ${coupleNames}, ${weddingDateLabel}`,
+      react: InvitationConfirmationEmail({
         fullName,
         code,
-        qrImageUrl,
-        events,
-        monogramUrl,
         rsvpUrl,
+        coupleNames,
+        weddingDateLabel,
       }),
+      attachments: [
+        {
+          filename: pdfFilename,
+          content: pdfBuffer,
+          contentType: "application/pdf",
+        },
+      ],
     });
 
     if (error) {

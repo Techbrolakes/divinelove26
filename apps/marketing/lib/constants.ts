@@ -16,11 +16,10 @@ export const MEAL_OPTIONS = [
 ] as const;
 
 export const NAV_LINKS = [
-  { href: "#story", label: "Our Story" },
-  { href: "#events", label: "Events" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#gift", label: "Gifts" },
-  { href: "#rsvp", label: "RSVP" },
+  { href: "/story", label: "Our Story" },
+  { href: "/events", label: "Events" },
+  { href: "/gifts", label: "Gifts" },
+  { href: "/gallery", label: "Gallery" },
 ] as const;
 
 export const CONFETTI_COLORS = ["#0b3d91", "#a8b4c4", "#1a56c4", "#c5cdd8", "#ffffff"];

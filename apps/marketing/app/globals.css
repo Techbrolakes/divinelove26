@@ -34,19 +34,37 @@
   --color-warm-600: #7a6c58;
   --color-warm-700: #5c5042;
 
+  /* Stationery — envelope + wax + parchment for the new cinematic */
+  --color-envelope: #0f2a5b;
+  --color-envelope-deep: #081f47;
+  --color-envelope-light: #1d3d76;
+  --color-wax: #8b3b3b;
+  --color-wax-light: #b15a5a;
+  --color-parchment: #efe7d3;
+  --color-parchment-dark: #d8ccb0;
+  --color-parchment-shadow: #b5a580;
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #2d2d2d;
+
   /* Fonts */
   --font-serif: var(--font-cormorant), Georgia, serif;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-script: var(--font-script), "Monsieur La Doulaise", cursive;
 }
 
 body {
-  background-color: var(--color-ivory);
-  color: #2d2d2d;
+  background-color: var(--color-envelope-deep);
+  color: #f5efe4;
   font-family: var(--font-sans);
+  /* Every page is a single 100vh scene with a shared blue backdrop. */
+  overflow: hidden;
+  height: 100vh;
 }
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  overflow: hidden;
 }
 
 ::selection {
@@ -155,4 +173,180 @@ html {
   opacity: 0.12;
   pointer-events: none;
   border-radius: inherit;
+}
+
+/* ─── Stationery cinematic — shared paper + envelope textures ─── */
+
+/* Aged parchment fibre — subtle fibre lines + warm tint */
+.parchment {
+  background-color: var(--color-parchment);
+  background-image:
+    radial-gradient(
+      ellipse at 30% 20%,
+      rgba(120, 90, 40, 0.09) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 75% 80%,
+      rgba(120, 90, 40, 0.07) 0%,
+      transparent 60%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.47 0 0 0 0 0.32 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: auto, auto, 220px 220px;
+}
+
+.parchment-deep {
+  background-color: var(--color-parchment-dark);
+  background-image:
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(60, 40, 20, 0.18) 0%,
+      transparent 65%
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.2 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: auto, 200px 200px;
+}
+
+/* Envelope body — royal-blue paper with subtle sheen */
+.envelope-paper {
+  background:
+    radial-gradient(
+      ellipse at 30% 25%,
+      rgba(255, 255, 255, 0.07) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      135deg,
+      var(--color-envelope-light) 0%,
+      var(--color-envelope) 50%,
+      var(--color-envelope-deep) 100%
+    );
+}
+
+/* Wax-seal gradient base — subtle radial so SVG monograms read on top */
+.wax-base {
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      var(--color-wax-light) 0%,
+      var(--color-wax) 55%,
+      #5e2626 100%
+    );
+}
+
+/* Torn-paper edge — applied as a mask-image for ragged photo frames */
+.torn-mask {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M3 4 Q8 2 14 5 Q20 1 28 4 Q38 0 46 3 Q55 1 64 5 Q73 0 82 4 Q92 1 102 4 Q112 0 122 4 Q132 1 142 4 Q152 0 162 4 Q172 1 182 4 Q194 0 206 5 Q218 1 228 4 Q240 0 252 4 Q264 1 276 4 Q286 1 296 5 L295 394 Q288 397 280 395 Q270 399 258 395 Q246 399 234 395 Q222 399 210 395 Q198 399 186 395 Q174 399 162 395 Q150 399 138 395 Q126 399 114 395 Q102 399 90 395 Q78 399 66 395 Q54 399 42 395 Q30 399 18 395 Q8 398 3 394 Z' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M3 4 Q8 2 14 5 Q20 1 28 4 Q38 0 46 3 Q55 1 64 5 Q73 0 82 4 Q92 1 102 4 Q112 0 122 4 Q132 1 142 4 Q152 0 162 4 Q172 1 182 4 Q194 0 206 5 Q218 1 228 4 Q240 0 252 4 Q264 1 276 4 Q286 1 296 5 L295 394 Q288 397 280 395 Q270 399 258 395 Q246 399 234 395 Q222 399 210 395 Q198 399 186 395 Q174 399 162 395 Q150 399 138 395 Q126 399 114 395 Q102 399 90 395 Q78 399 66 395 Q54 399 42 395 Q30 399 18 395 Q8 398 3 394 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Ink-reveal — clip-path for chapter headings as they "ink in" */
+@keyframes ink-bleed {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Script font utility — handwritten accent */
+.font-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+}
+
+/* Polaroid drop-shadow — layered soft + sharp */
+.polaroid-shadow {
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
+}
+
+/* Ambient gold particle drift — slow upward float with a gentle sway. */
+@keyframes gold-particle-drift {
+  0% {
+    transform: translate3d(0, 100vh, 0);
+  }
+  50% {
+    transform: translate3d(12px, 50vh, 0);
+  }
+  100% {
+    transform: translate3d(-10px, -10vh, 0);
+  }
+}
+.gold-particle {
+  bottom: 0;
+  animation-name: gold-particle-drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+/* One-shot gold shimmer sweep across text — applied via class then
+ * removed after the animation plays. */
+@keyframes shimmer-sweep {
+  0% {
+    background-position: -150% center;
+  }
+  100% {
+    background-position: 250% center;
+  }
+}
+.text-shimmer {
+  background: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 40%,
+    rgba(232, 216, 168, 1) 50%,
+    currentColor 60%,
+    currentColor 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-sweep 2.4s ease-out 1.2s 1 both;
+}
+
+/* Wavy cream polaroid-paper texture — a thin wavy stripe pattern layered
+ * over warm parchment + subtle fibre noise. Used as the background for
+ * gallery tile frames so the border has a textile feel instead of a
+ * flat white. */
+.polaroid-wavy {
+  background-color: #fdfaf3;
+  background-image:
+    /* muted warm wavy horizontal stripes — three offset layers on white */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 Q10 2 20 8 T40 8 T60 8 T80 8' fill='none' stroke='%23a88a50' stroke-width='0.8' stroke-opacity='0.28'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'%3E%3Cpath d='M0 4 Q10 -2 20 4 T40 4 T60 4 T80 4' fill='none' stroke='%23c2a66a' stroke-width='0.6' stroke-opacity='0.22'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 16' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q10 6 20 12 T40 12 T60 12 T80 12' fill='none' stroke='%23c2a66a' stroke-width='0.6' stroke-opacity='0.22'/%3E%3C/svg%3E"),
+    /* very light paper noise for texture */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.0' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.3 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 80px 16px, 80px 16px, 80px 16px, 240px 240px;
+  background-position: 0 0, 0 8px, 40px 0, 0 0;
+  background-repeat: repeat;
+}
+
+/* Reduced motion — disable all scrubbed/continuous visual motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .gold-shimmer {
+    animation: none !important;
+    background: var(--color-gold-light);
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: var(--color-gold-light);
+  }
 }

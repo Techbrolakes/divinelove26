@@ -5,8 +5,7 @@
   "private": true,
   "exports": {
     ".": "./dist/index.js",
-    "./send": "./dist/send.js",
-    "./templates/invitation": "./dist/templates/invitation.js"
+    "./send": "./dist/send.js"
   },
   "scripts": {
     "build": "tsc",
@@ -15,14 +14,17 @@
     "lint": "eslint src --max-warnings 0"
   },
   "dependencies": {
-    "@repo/env": "workspace:*",
-    "resend": "^4.1.2",
     "@react-email/components": "^0.0.31",
-    "react": "^19.2.0"
+    "@react-pdf/renderer": "^4.5.1",
+    "@repo/env": "workspace:*",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.0",
+    "resend": "^4.1.2"
   },
   "devDependencies": {
     "@repo/tooling": "workspace:*",
     "@types/node": "^22.15.30",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.0",
     "typescript": "5.9.2"
   }

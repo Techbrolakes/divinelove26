@@ -110,10 +110,24 @@ export default function BackgroundMusic() {
     };
   }, [isPlaying, pause, play]);
 
+  // Scenes dispatch `ambient-audio-duck` with a target volume to quiet
+  // or swell the track as the reader moves through the experience.
   useEffect(() => {
+    const onDuck = (e: Event) => {
+      const detail = (e as CustomEvent<{ volume?: number }>).detail;
+      const target = detail?.volume;
+      if (typeof target !== "number") return;
+      if (!isPlaying) return;
+      fadeTo(Math.max(0, Math.min(target, 1)), 1400);
+    };
+    window.addEventListener("ambient-audio-duck", onDuck);
+    return () => window.removeEventListener("ambient-audio-duck", onDuck);
+  }, [isPlaying, fadeTo]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
     return () => {
       if (fadeRafRef.current !== null) cancelAnimationFrame(fadeRafRef.current);
-      const audio = audioRef.current;
       if (audio) {
         audio.pause();
         audio.src = "";
@@ -134,25 +148,24 @@ export default function BackgroundMusic() {
           }
         }}
       />
-      <div className="fixed right-5 bottom-5 md:right-8 md:bottom-8 z-50 flex items-center gap-2 md:gap-3">
+      <div className="fixed right-4 bottom-5 md:right-8 md:bottom-8 z-50 flex items-center gap-2 md:gap-3">
         <span
           aria-hidden
-          className={`inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-royal-dark/85 backdrop-blur-md px-3 py-1.5 font-sans text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.35em] uppercase text-gold-light whitespace-nowrap shadow-[0_6px_18px_rgba(0,0,0,0.35)] transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
+          className={`hidden md:inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-royal-dark/85 backdrop-blur-md px-3 py-1.5 font-sans text-[9px] md:text-[10px] tracking-[0.3em] md:tracking-[0.35em] uppercase text-gold-light whitespace-nowrap shadow-[0_6px_18px_rgba(0,0,0,0.35)] transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${
             pendingAutoplay && !isPlaying
               ? "opacity-100 translate-x-0"
               : "opacity-0 translate-x-2 pointer-events-none"
           }`}
         >
           <span aria-hidden className="text-gold">♪</span>
-          <span className="md:hidden">Tap for music</span>
-          <span className="hidden md:inline">Tap anywhere for music</span>
+          <span>Tap anywhere for music</span>
         </span>
         <button
           type="button"
           onClick={toggle}
           aria-label={isPlaying ? "Pause background music" : "Play background music"}
           aria-pressed={isPlaying}
-          className="group flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full border border-gold/40 bg-royal-dark/85 backdrop-blur-md text-gold-light shadow-[0_14px_36px_rgba(0,0,0,0.35)] transition-[background-color,border-color,color] duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:border-gold hover:bg-royal hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+          className="group flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full border border-gold/40 bg-royal-dark/85 backdrop-blur-md text-gold-light shadow-[0_14px_36px_rgba(0,0,0,0.35)] transition-[background-color,border-color,color] duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:border-gold hover:bg-royal hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
         >
           {isPlaying ? <WaveBars /> : <MusicNote />}
         </button>

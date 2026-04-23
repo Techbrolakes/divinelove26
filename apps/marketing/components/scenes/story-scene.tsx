@@ -139,7 +139,7 @@ export default function StoryScene({
               data-story-para
               className="font-serif text-white/85 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              <DropCap letter="M" />
+              <DropCap letter="M" className="!text-white" />
               <span className="text-white/85">
                 y director had just made a purchase from Ediotech and sent me
                 his number so I could receive it on her behalf. At the time,
@@ -169,7 +169,7 @@ export default function StoryScene({
               data-story-para
               className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              <DropCap letter="I" />
+              <DropCap letter="I" className="!text-white" />
               <span className="text-white/85">
                 {" "}received my fianc&eacute;e&rsquo;s contact from her
                 highly esteemed director so I could deliver a package to her,

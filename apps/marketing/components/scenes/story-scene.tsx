@@ -71,7 +71,6 @@ export default function StoryScene({
             id="story"
             eyebrow="A love letter in writing"
             title="Our Story"
-            subtitle="2020 — 2026"
           />
         </div>
 
@@ -133,69 +132,156 @@ export default function StoryScene({
               data-story-para
               className="relative font-serif italic text-gold-light/85 text-xs md:text-sm tracking-[0.25em] uppercase opacity-0"
             >
-              Chapter I · How it began
+              How it began · Her Version
             </p>
 
             <div
               data-story-para
               className="font-serif text-white/85 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              <DropCap letter="W" />
-              <span className="text-white">
-                e met at a mutual friend&rsquo;s gathering over borrowed chairs
-                and easy laughter. Neither of us guessed that the night would
-                become the prologue to a life.
+              <DropCap letter="M" />
+              <span className="text-white/85">
+                y director had just made a purchase from Ediotech and sent me
+                his number so I could receive it on her behalf. At the time,
+                it seemed like nothing more than another routine task for a
+                Personal Assistant, but I had no idea that heaven was quietly
+                arranging the steps of my love story behind the scenes. As
+                the days went by, I found myself interacting with him more
+                often through assignments from the director, and what began
+                as brief work conversations slowly turned into warm exchanges
+                filled with laughter, kindness, and an unexpected connection.
+                With every conversation, friendship blossomed naturally.
+                Looking back now, I smile at how an ordinary assignment
+                became the beginning of an extraordinary journey, proving
+                that what I thought was just work was truly divine destiny at
+                work.
               </span>
             </div>
 
             <p
               data-story-para
-              className="font-serif italic text-white/85 text-lg md:text-xl leading-[1.6] border-l-2 border-gold/50 pl-5 opacity-0"
+              className="font-serif italic text-gold-light/80 text-xs md:text-sm tracking-[0.25em] uppercase pt-4 opacity-0"
             >
-              &ldquo;The conversation began at dinner and has not paused since.&rdquo;
+              How it began · His Version
+            </p>
+
+            <div
+              data-story-para
+              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+            >
+              <DropCap letter="I" />
+              <span className="text-white/85">
+                {" "}received my fianc&eacute;e&rsquo;s contact from her
+                highly esteemed director so I could deliver a package to her,
+                not realizing that I was stepping into divine destiny. What
+                seemed like a simple responsibility at the time became the
+                beginning of one of the greatest blessings of my life, as God
+                was quietly writing the story of our future together. As time
+                went on and we began to interact more often, I found myself
+                drawn not only to her presence but to the beauty of her
+                heart.
+              </span>
+            </div>
+
+            <p
+              data-story-para
+              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+            >
+              With every conversation, I grew to admire the kind of person
+              she is &mdash; calm, patient, trusting, and full of grace in a
+              world where such qualities are rare. She carried herself with
+              wisdom and a quiet strength that made her stand out
+              effortlessly. What touched me even more was how she never
+              allowed the opinions of others to shape the way she saw me;
+              instead, she chose to know me for herself, focus on the
+              present, and give me her full trust as a friend.
             </p>
 
             <p
               data-story-para
               className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              A quiet table, two glasses, and hours that refused to end. By
-              the time the waiter cleared our plates, we knew the story had
-              started. Conversations turned into weekends, weekends into
-              seasons, and seasons into a life we built, quietly, on purpose.
+              She became someone I could always depend on, always available
+              whenever I needed a prayer partner, encouragement, or simply
+              someone to talk to, no matter the time of day. Her consistency,
+              kindness, and genuine care spoke louder than words ever could.
+              What started as a simple connection became something deeper,
+              stronger, and more meaningful than I ever expected. In her, I
+              found peace, love, and the kind of rare treasure I had long
+              desired.
             </p>
 
             <p
               data-story-para
               className="font-serif italic text-gold-light/80 text-xs md:text-sm tracking-[0.25em] uppercase pt-4 opacity-0"
             >
-              Chapter II · The Question
+              Friendship to Courtship
             </p>
 
             <p
               data-story-para
               className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              In December 2022, under a quiet sky, a question was asked — and
-              the future said yes. He chose a moment so still it felt
-              borrowed from a dream; she said yes before he finished asking,
-              and the stars seemed to agree.
+              On a beautiful day, we finally had an honest conversation about
+              the attraction we felt for each other, and we both agreed to
+              give ourselves time to pray before making any decision,
+              especially because neither of us was looking for just a
+              boyfriend/girlfriend relationship &mdash; we desired something
+              more meaningful and purposeful. After spending time in prayer,
+              we both received clarity, answers, and direction from the Holy
+              Spirit. He then met with his pastor, and afterward with my
+              pastor, before proceeding to meet with both families. After
+              receiving the necessary blessings and approvals, we officially
+              began our divine love journey.
+            </p>
+
+            <p
+              data-story-para
+              className="font-serif italic text-gold-light/80 text-xs md:text-sm tracking-[0.25em] uppercase pt-4 opacity-0"
+            >
+              Courtship to Engagement
+            </p>
+
+            <p
+              data-story-para
+              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+            >
+              Knowing that we had already received the necessary approvals
+              and blessings from both families and spiritual covering, I
+              still felt a deep desire to ask her properly in a way that
+              truly reflected the value she holds in my heart. She is someone
+              I deeply respect, cherish, and admire, and I wanted that moment
+              to be intentional, thoughtful, and worthy of her beautiful
+              heart and person.
+            </p>
+
+            <p
+              data-story-para
+              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+            >
+              So I got my sisters on board, my friend, and also had her
+              younger sister involved, and together we carefully planned
+              every detail of the proposal with love, excitement, and
+              purpose. It wasn&rsquo;t rushed or ordinary &mdash; it was
+              intentional, filled with meaning, and surrounded by the people
+              who mattered most to us.
             </p>
 
             <p
               data-story-para
               className="font-serif italic text-white/85 text-lg md:text-xl leading-[1.6] border-l-2 border-gold/50 pl-5 opacity-0"
             >
-              &ldquo;Now we are choosing forever, on purpose.&rdquo;
+              &ldquo;On that special day, as everything came together, my
+              heart was full of gratitude and peace, knowing how far God had
+              brought us. In that moment, I asked the question that mattered
+              most &mdash; and with a beautiful smile, she said yes.&rdquo;
             </p>
 
             <p
               data-story-para
               className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              Now we invite you to stand with us as two stories become one.
-              A chapter written slowly, lovingly, and meant to be shared with
-              those we hold dearest.
+              That yes marked the beginning of our divine love.
             </p>
 
             <div data-story-para className="pt-3 flex items-center gap-4 opacity-0">

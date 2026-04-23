@@ -7,22 +7,14 @@ import { useGSAP, gsap } from "@/lib/gsap";
 
 const EVENTS = [
   {
-    label: "The Ceremony",
-    name: "Wedding Ceremony",
-    date: "June 20, 2026",
-    time: "2:00 PM",
-    venue: "Venue Name",
-    address: "123 Beautiful Street, City, State",
-    dressCode: "Formal Attire",
+    label: "The Introduction",
+    name: "Traditional Wedding",
+    date: "18th June 2026",
   },
   {
-    label: "The Reception",
-    name: "Reception",
-    date: "June 20, 2026",
-    time: "5:00 PM",
-    venue: "Reception Venue",
-    address: "456 Celebration Avenue, City, State",
-    dressCode: "Formal Attire",
+    label: "The Ceremony",
+    name: "Church Wedding",
+    date: "20th June 2026",
   },
 ];
 
@@ -104,43 +96,27 @@ export default function EventsScene() {
               <WaxSeal initials="DL" size={68} className="hidden md:block" />
             </div>
 
-            <div className="relative p-4 md:p-7 text-center">
+            <div className="relative p-5 md:p-8 text-center">
               <p className="font-sans text-[9px] md:text-[10px] tracking-[0.4em] md:tracking-[0.45em] uppercase text-gold-light/70">
                 {ev.label}
               </p>
-              <h3 className="mt-1.5 md:mt-2 font-serif text-xl md:text-3xl font-light tracking-wide">
+              <h3 className="mt-2 md:mt-3 font-serif text-2xl md:text-4xl font-light tracking-wide">
                 {ev.name}
               </h3>
 
-              <div className="mt-2.5 md:mt-4 flex items-center justify-center gap-2 md:gap-3">
+              <div className="mt-3 md:mt-5 flex items-center justify-center gap-2 md:gap-3">
                 <span className="h-px w-6 md:w-8 bg-gold/40" />
                 <span className="w-1.5 h-1.5 rotate-45 bg-gold/60" />
                 <span className="h-px w-6 md:w-8 bg-gold/40" />
               </div>
 
-              <p className="mt-2.5 md:mt-4 font-serif italic text-gold-light/85 text-sm md:text-lg">
+              <p className="mt-3 md:mt-5 font-serif italic text-gold-light/90 text-base md:text-xl">
                 {ev.date}
               </p>
-              <p className="mt-0.5 md:mt-1 font-sans text-[9px] md:text-[10px] tracking-[0.4em] md:tracking-[0.45em] uppercase text-gold">
-                {ev.time}
+
+              <p className="mt-4 md:mt-6 font-sans text-[9px] md:text-[10px] tracking-[0.35em] uppercase text-white/55">
+                Venue &amp; time to follow
               </p>
-
-              <div className="mt-3 md:mt-5">
-                <p className="font-serif text-sm md:text-lg text-white">
-                  {ev.venue}
-                </p>
-                <p className="mt-0.5 md:mt-1 font-sans text-[10px] md:text-[11px] text-white/60 tracking-wide">
-                  {ev.address}
-                </p>
-              </div>
-
-              <div className="mt-3 md:mt-5 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-white/[0.04] px-3 md:px-4 py-1 md:py-1.5">
-                <span className="w-1 h-1 rounded-full bg-gold" />
-                <span className="font-sans text-[9px] md:text-[10px] tracking-[0.35em] uppercase text-gold-light/85">
-                  {ev.dressCode}
-                </span>
-                <span className="w-1 h-1 rounded-full bg-gold" />
-              </div>
             </div>
           </div>
         ))}

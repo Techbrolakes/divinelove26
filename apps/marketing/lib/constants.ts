@@ -45,15 +45,15 @@ export const GIFT_BACKDROP = "/gallery/prewedding-18.jpg";
 export const GIFT_ACCOUNTS = [
   {
     label: "Primary Account",
-    bank: "First Bank of Nigeria",
-    name: "Ikhioya David Ohiozoje",
-    number: "3012345678",
+    bank: "Parallex Bank",
+    name: "Idah Joy Itsosi",
+    number: "1000219510",
   },
   {
     label: "Alternate Account",
-    bank: "Access Bank",
-    name: "Idah Joy Itsosi",
-    number: "0123456789",
+    bank: "Providus Bank",
+    name: "Ikhioya David",
+    number: "6504055827",
   },
 ] as const;
 

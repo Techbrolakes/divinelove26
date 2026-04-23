@@ -29,8 +29,8 @@ interface LightboxProps {
 }
 
 const DEFAULT_AUTOPLAY_MS = 5200;
-const DEFAULT_AUDIO_SRC = "/audio/alabaster-box.mp3";
-const AUDIO_START_SECONDS = 30;
+const DEFAULT_AUDIO_SRC = "/audio/gracious-and-kind.mp3";
+const AUDIO_START_SECONDS = 60;
 const TARGET_VOLUME = 0.35;
 const AUDIO_FADE_MS = 1800;
 const SWIPE_THRESHOLD = 60;

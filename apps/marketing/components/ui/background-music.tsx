@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const SRC = "/audio/alabaster-box.mp3";
-const START_SECONDS = 30;
+const SRC = "/audio/gracious-and-kind.mp3";
+const START_SECONDS = 60;
 const TARGET_VOLUME = 0.18;
 const FADE_MS = 1600;
 

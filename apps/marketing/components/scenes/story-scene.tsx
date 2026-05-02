@@ -259,7 +259,7 @@ export default function StoryScene({
               data-story-para
               className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
             >
-              So I got my sisters on board, my friend, and also had her
+              So I got my sisters on board, my friend and also had her
               younger sister involved, and together we carefully planned
               every detail of the proposal with love, excitement, and
               purpose. It wasn&rsquo;t rushed or ordinary &mdash; it was
@@ -269,12 +269,20 @@ export default function StoryScene({
 
             <p
               data-story-para
+              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+            >
+              On that special day, as everything came together, my heart was
+              full of gratitude and peace, knowing how far God had brought
+              us. In that moment, I asked the question that mattered most,
+              not just as a formality, but as a sincere expression of my
+              heart and commitment.
+            </p>
+
+            <p
+              data-story-para
               className="font-serif italic text-white/85 text-lg md:text-xl leading-[1.6] border-l-2 border-gold/50 pl-5 opacity-0"
             >
-              &ldquo;On that special day, as everything came together, my
-              heart was full of gratitude and peace, knowing how far God had
-              brought us. In that moment, I asked the question that mattered
-              most &mdash; and with a beautiful smile, she said yes.&rdquo;
+              And with a beautiful smile, she said yes.
             </p>
 
             <p

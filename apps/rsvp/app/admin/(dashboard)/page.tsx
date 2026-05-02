@@ -79,7 +79,7 @@ export default function DashboardPage() {
             </h1>
             <p className="mt-3 font-sans text-[14px] text-white/70 max-w-md">
               Manage registrations, send invitations, and check guests in at
-              Ikhioya &amp; Idah&apos;s wedding.
+              Idah &amp; Ikhioya&apos;s wedding.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

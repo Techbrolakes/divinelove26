@@ -110,7 +110,7 @@ export function AdminSidebar({
                     className="font-serif italic text-white text-[22px] leading-none mt-0.5"
                     style={{ fontFamily: "var(--font-cormorant), serif" }}
                   >
-                    Ikhioya &amp; Idah
+                    Idah &amp; Ikhioya
                   </span>
                 </div>
               </Link>

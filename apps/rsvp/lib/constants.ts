@@ -1,8 +1,8 @@
 export const WEDDING_DATE = new Date("2026-06-20T14:00:00");
 
 export const COUPLE = {
-  partner1: "Ikhioya David Ohiozoje",
-  partner2: "Idah Joy Itsosi",
+  partner1: "Idah Joy Itsosi",
+  partner2: "Ikhioya David Ohiozoje",
   hashtag: "#DIVINELOVE26",
 };
 

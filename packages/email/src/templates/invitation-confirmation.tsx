@@ -31,7 +31,7 @@ export function InvitationConfirmationEmail({
   fullName,
   code,
   rsvpUrl,
-  coupleNames = "Ikhioya & Idah",
+  coupleNames = "Idah & Ikhioya",
   weddingDateLabel = "Saturday, 20 June 2026",
 }: InvitationConfirmationEmailProps) {
   const firstName = fullName.trim().split(/\s+/)[0] ?? fullName;

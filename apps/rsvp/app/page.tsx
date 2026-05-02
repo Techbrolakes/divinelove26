@@ -92,11 +92,11 @@ export default function RsvpPage() {
           </motion.p>
 
           <h1 className="font-serif italic font-light text-white/95 text-5xl md:text-7xl tracking-tight leading-none">
-            Ikhioya
+            Idah
             <span className="inline-block mx-3 text-white/50 text-4xl md:text-5xl">
               &amp;
             </span>
-            Idah
+            Ikhioya
           </h1>
 
           <div className="flex items-center justify-center gap-5 mt-8">
@@ -317,7 +317,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
       </motion.button>
 
       <p className="text-center font-serif italic text-gray-900 text-[13px] pt-1">
-        Ikhioya &amp; Idah &middot; 20 June 2026
+        Idah &amp; Ikhioya &middot; 20 June 2026
       </p>
     </form>
   );

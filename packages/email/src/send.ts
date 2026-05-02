@@ -86,7 +86,7 @@ export async function sendInvitationEmail({
   code,
   events,
   rsvpUrl,
-  coupleNames = "Ikhioya & Idah",
+  coupleNames = "Idah & Ikhioya",
   weddingDateLabel = "Saturday, 20 June 2026",
 }: SendInvitationParams): Promise<{ success: boolean; error?: string }> {
   try {

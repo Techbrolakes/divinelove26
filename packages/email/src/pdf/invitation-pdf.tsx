@@ -36,7 +36,7 @@ const MUTED = "#6b7280";
 const CREAM = "#faf6ef";
 const BORDER = "#e5e7eb";
 
-const DEFAULT_COUPLE = "Ikhioya David & Idah Joy";
+const DEFAULT_COUPLE = "Idah Joy & Ikhioya David";
 const DEFAULT_DATE = "Saturday, 20 June 2026";
 const ADDRESS_FALLBACK = "Address to be announced";
 

@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
             Divine Love 26
           </h1>
           <p className="font-serif italic text-royal-100 text-xl mb-10">
-            Ikhioya &amp; Idah
+            Idah &amp; Ikhioya
           </p>
           <div className="flex items-center justify-center gap-4 mb-8">
             <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/40 to-transparent" />

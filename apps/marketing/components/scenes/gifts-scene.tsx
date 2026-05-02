@@ -90,41 +90,67 @@ export default function GiftsScene() {
   return (
     <section
       ref={scope}
-      className="relative z-[1] h-screen overflow-hidden flex flex-col items-center justify-center px-6 pt-20 pb-20 md:pb-24"
+      className="relative z-[1] h-screen overflow-y-auto overflow-x-hidden no-scrollbar flex flex-col items-center md:justify-center px-5 md:px-6 pt-20 pb-24 md:pb-24"
     >
-      <div className="relative z-[2] mb-10 md:mb-14">
+      <div className="relative z-[2] mb-5 md:mb-10 w-full">
         <SceneHeader
           id="gifts"
           eyebrow="A note on gifts"
-          title="With Gratitude"
-          subtitle="Your presence is the greatest gift. Any further kindness may be sent through the channels below."
+          title="Gifts"
         />
       </div>
 
-      <div className="relative z-[2] grid gap-5 md:grid-cols-3 md:gap-7 w-full max-w-5xl">
+      <div
+        className="relative z-[2] w-full max-w-2xl mx-auto mb-6 md:mb-14 rounded-sm border border-gold/40 px-4 py-5 md:px-9 md:py-7 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.08)]"
+        style={{
+          background:
+            "linear-gradient(160deg, #0a2255 0%, #061a43 55%, #04123a 100%)",
+        }}
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-2 border border-gold/15 rounded-[1px]"
+        />
+
+        <div className="relative space-y-2.5 md:space-y-4 text-center">
+          <p className="font-serif italic text-gold-light/90 text-sm md:text-lg leading-[1.55] md:leading-[1.6]">
+            Your presence at our wedding means the world to us. We are
+            genuinely grateful to be celebrating this special moment with
+            you.
+          </p>
+          <p className="font-serif text-white/85 text-[13px] md:text-base leading-[1.6] md:leading-[1.7]">
+            However, should you wish to further bless us with a gift, we
+            would be deeply appreciative if it could be presented in
+            monetary form. Your thoughtfulness and generosity are sincerely
+            appreciated. Kindly find the details below for your
+            convenience.
+          </p>
+        </div>
+      </div>
+
+      <div className="relative z-[2] grid gap-4 md:grid-cols-3 md:gap-7 w-full max-w-5xl">
         {accounts.map((a) => (
           <div
             key={a.key}
             data-gifts-card
-            className="relative flex flex-col rounded-sm border border-gold/40 p-6 md:p-7 opacity-0 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.08)]"
+            className="relative flex flex-col rounded-sm border border-gold/40 p-5 md:p-7 opacity-0 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.85),inset_0_1px_0_rgba(255,255,255,0.08)]"
             style={{
               willChange: "transform, opacity",
               background:
                 "linear-gradient(160deg, #0a2255 0%, #061a43 55%, #04123a 100%)",
             }}
           >
-            {/* Wax seal — bigger, prouder */}
+            {/* Wax seal — desktop only; hidden on mobile so stacked cards stay tight */}
             <div
               data-gifts-seal
               aria-hidden
-              className="pointer-events-none absolute -top-5 -right-5 md:-top-6 md:-right-6 z-[3] opacity-0"
+              className="pointer-events-none hidden md:block absolute md:-top-6 md:-right-6 z-[3] opacity-0"
               style={{ willChange: "transform, opacity" }}
             >
-              <WaxSeal initials="DL" size={56} className="md:hidden" />
-              <WaxSeal initials="DL" size={72} className="hidden md:block" />
+              <WaxSeal initials="DL" size={72} />
             </div>
 
-            <div className="flex items-center justify-between gap-3 pr-10">
+            <div className="flex items-center justify-between gap-3 md:pr-10">
               <p className="font-sans text-[10px] tracking-[0.45em] uppercase text-gold-light/85">
                 {a.label}
               </p>
@@ -135,12 +161,12 @@ export default function GiftsScene() {
               )}
             </div>
 
-            <p className="mt-4 font-serif text-2xl md:text-3xl text-white tracking-wide tabular-nums break-all leading-tight">
+            <p className="mt-3 md:mt-4 font-serif text-xl md:text-3xl text-white tracking-wide tabular-nums break-all leading-tight">
               {a.primary}
             </p>
 
             {a.tertiary && (
-              <p className="mt-1.5 font-sans text-[13px] text-white/70">
+              <p className="mt-1 md:mt-1.5 font-sans text-[12px] md:text-[13px] text-white/70">
                 {a.tertiary}
               </p>
             )}
@@ -149,7 +175,7 @@ export default function GiftsScene() {
               type="button"
               onClick={() => copy(a.copyValue, a.key)}
               aria-label={`Copy ${a.label}`}
-              className="mt-5 inline-flex items-center justify-center gap-2 self-start rounded-full border border-gold/50 bg-black/30 px-5 py-2 font-sans text-[10px] tracking-[0.4em] uppercase text-gold-light transition-all duration-300 hover:border-gold hover:text-white hover:bg-black/50 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
+              className="mt-4 md:mt-5 inline-flex items-center justify-center gap-2 self-start rounded-full border border-gold/50 bg-black/30 px-4 md:px-5 py-1.5 md:py-2 font-sans text-[10px] tracking-[0.4em] uppercase text-gold-light transition-all duration-300 hover:border-gold hover:text-white hover:bg-black/50 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/60"
             >
               <span
                 aria-hidden

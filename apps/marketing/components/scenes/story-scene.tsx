@@ -137,7 +137,7 @@ export default function StoryScene({
 
             <div
               data-story-para
-              className="font-serif text-white/85 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/90 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               <DropCap letter="M" className="!text-white" />
               <span className="text-white/85">
@@ -167,7 +167,7 @@ export default function StoryScene({
 
             <div
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               <DropCap letter="I" className="!text-white" />
               <span className="text-white/85">
@@ -185,7 +185,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               With every conversation, I grew to admire the kind of person
               she is &mdash; calm, patient, trusting, and full of grace in a
@@ -199,7 +199,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               She became someone I could always depend on, always available
               whenever I needed a prayer partner, encouragement, or simply
@@ -220,7 +220,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               On a beautiful day, we finally had an honest conversation about
               the attraction we felt for each other, and we both agreed to
@@ -244,7 +244,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               Knowing that we had already received the necessary approvals
               and blessings from both families and spiritual covering, I
@@ -257,7 +257,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               So I got my sisters on board, my friend and also had her
               younger sister involved, and together we carefully planned
@@ -269,7 +269,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               On that special day, as everything came together, my heart was
               full of gratitude and peace, knowing how far God had brought
@@ -287,7 +287,7 @@ export default function StoryScene({
 
             <p
               data-story-para
-              className="font-serif text-white/80 text-base md:text-lg leading-[1.85] opacity-0"
+              className="font-sans text-white/85 text-[15px] md:text-base leading-[1.75] opacity-0"
             >
               That yes marked the beginning of our divine love.
             </p>

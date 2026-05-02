@@ -112,13 +112,13 @@ export default function GiftsScene() {
           className="pointer-events-none absolute inset-2 border border-gold/15 rounded-[1px]"
         />
 
-        <div className="relative space-y-2.5 md:space-y-4 text-center">
-          <p className="font-serif italic text-gold-light/90 text-sm md:text-lg leading-[1.55] md:leading-[1.6]">
+        <div className="relative space-y-3 md:space-y-4 text-center">
+          <p className="font-sans text-gold-light/95 text-[14px] md:text-base leading-[1.65] md:leading-[1.7]">
             Your presence at our wedding means the world to us. We are
             genuinely grateful to be celebrating this special moment with
             you.
           </p>
-          <p className="font-serif text-white/85 text-[13px] md:text-base leading-[1.6] md:leading-[1.7]">
+          <p className="font-sans text-white/90 text-[13px] md:text-[15px] leading-[1.7] md:leading-[1.75]">
             However, should you wish to further bless us with a gift, we
             would be deeply appreciative if it could be presented in
             monetary form. Your thoughtfulness and generosity are sincerely

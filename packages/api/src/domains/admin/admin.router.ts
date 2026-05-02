@@ -1,5 +1,10 @@
 import { router, adminProcedure } from "../../trpc";
-import { guestIdSchema, validateCodeSchema } from "./admin.schema";
+import {
+  adminIdSchema,
+  createAdminSchema,
+  guestIdSchema,
+  validateCodeSchema,
+} from "./admin.schema";
 import * as adminService from "./admin.service";
 
 export const adminRouter = router({
@@ -23,6 +28,22 @@ export const adminRouter = router({
     .input(validateCodeSchema)
     .mutation(({ ctx, input }) =>
       adminService.validateCode(ctx.db, input.code),
+    ),
+
+  listAdmins: adminProcedure.query(({ ctx }) =>
+    adminService.listAdmins(ctx.db),
+  ),
+
+  createAdmin: adminProcedure
+    .input(createAdminSchema)
+    .mutation(({ ctx, input }) =>
+      adminService.createAdmin(ctx.db, ctx.user.id, input),
+    ),
+
+  deleteAdmin: adminProcedure
+    .input(adminIdSchema)
+    .mutation(({ ctx, input }) =>
+      adminService.deleteAdmin(ctx.db, ctx.user.id, input.adminId),
     ),
 });
 

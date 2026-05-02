@@ -10,6 +10,7 @@ import {
   SquaresFourIcon,
   UsersIcon,
   QrCodeIcon,
+  ShieldCheckIcon,
   CaretDoubleLeftIcon,
   CaretDoubleRightIcon,
   CaretRightIcon,
@@ -31,13 +32,14 @@ const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: SquaresFourIcon },
   { href: "/admin/guests", label: "Registrations", icon: UsersIcon },
   { href: "/admin/validate", label: "Validate Code", icon: QrCodeIcon },
+  { href: "/admin/team", label: "Team", icon: ShieldCheckIcon },
 ];
 
 const navItemBase =
-  "group relative flex w-full items-center rounded-xl text-[13px] font-medium transition-all cursor-pointer";
+  "group relative flex w-full items-center rounded-lg text-[13px] font-medium transition-all cursor-pointer";
 const navItemActive =
-  "bg-gradient-to-r from-white/15 to-white/5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]";
-const navItemInactive = "text-white/60 hover:bg-white/5 hover:text-white";
+  "bg-white/[0.08] text-white ring-1 ring-inset ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]";
+const navItemInactive = "text-white/55 hover:bg-white/[0.04] hover:text-white";
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/admin") return pathname === "/admin";
@@ -103,14 +105,11 @@ export function AdminSidebar({
                   />
                 </div>
                 <div className="flex flex-col leading-tight min-w-0">
-                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/50 truncate">
+                  <span className="font-sans text-[9px] font-semibold tracking-[0.3em] uppercase text-white/55 truncate">
                     Divine Love 26
                   </span>
-                  <span
-                    className="font-serif italic text-white text-[22px] leading-none mt-0.5"
-                    style={{ fontFamily: "var(--font-cormorant), serif" }}
-                  >
-                    Idah &amp; Ikhioya
+                  <span className="font-sans text-white text-[15px] font-semibold leading-none mt-1 tracking-tight">
+                    Admin
                   </span>
                 </div>
               </Link>
@@ -187,7 +186,7 @@ export function AdminSidebar({
                   title={collapsed ? item.label : undefined}
                 >
                   {active && !collapsed && (
-                    <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-white" />
+                    <span className="absolute -left-3 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-gradient-to-b from-white via-white to-white/60 shadow-[0_0_12px_rgba(255,255,255,0.4)]" />
                   )}
                   <span
                     className={cn(
@@ -197,10 +196,7 @@ export function AdminSidebar({
                         : "bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white",
                     )}
                   >
-                    <item.icon
-                      size={16}
-                      weight={active ? "fill" : "regular"}
-                    />
+                    <item.icon size={16} weight={active ? "fill" : "regular"} />
                   </span>
                   {!collapsed && (
                     <>
@@ -300,10 +296,19 @@ export function AdminSidebar({
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden shrink-0 md:flex md:flex-col fixed inset-y-0 left-0 z-30 bg-royal-dark border-r border-white/5 transition-all duration-300",
+          "hidden shrink-0 md:flex md:flex-col fixed inset-y-0 left-0 z-30 border-r border-white/5 transition-all duration-300 overflow-hidden",
           isCollapsed ? "w-[72px]" : "w-[260px]",
         )}
+        style={{
+          backgroundImage:
+            "radial-gradient(1200px 600px at -10% -20%, rgba(255,255,255,0.06), transparent 60%), radial-gradient(800px 400px at 110% 110%, rgba(255,215,148,0.05), transparent 60%), linear-gradient(180deg, #07215a 0%, #04143b 100%)",
+        }}
       >
+        {/* Subtle vertical accent line */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-0 inset-y-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent"
+        />
         {renderSidebarContent(!!isCollapsed, false)}
       </aside>
 
@@ -319,9 +324,13 @@ export function AdminSidebar({
       {/* Mobile drawer */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-[280px] shrink-0 bg-royal-dark md:hidden flex flex-col transform transition-transform duration-300 ease-in-out border-r border-white/5",
+          "fixed inset-y-0 left-0 z-50 w-[280px] shrink-0 md:hidden flex flex-col transform transition-transform duration-300 ease-in-out border-r border-white/5 overflow-hidden",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
+        style={{
+          backgroundImage:
+            "radial-gradient(1200px 600px at -10% -20%, rgba(255,255,255,0.06), transparent 60%), radial-gradient(800px 400px at 110% 110%, rgba(255,215,148,0.05), transparent 60%), linear-gradient(180deg, #07215a 0%, #04143b 100%)",
+        }}
       >
         {renderSidebarContent(false, true)}
       </aside>

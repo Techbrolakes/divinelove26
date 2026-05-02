@@ -15,7 +15,8 @@ export const env = createEnv({
     AUTH_SECRET: z.string().min(1),
 
     RESEND_API_KEY: z.string().min(1),
-    RESEND_FROM_EMAIL: z.string().min(1),
+    RESEND_FROM_EMAIL: z.string().email(),
+    RESEND_FROM_NAME: z.string().min(1).default("Divine Love 26"),
   },
   client: {
     NEXT_PUBLIC_MARKETING_URL: z.string().url().optional(),

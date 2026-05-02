@@ -331,6 +331,9 @@ importers:
       '@react-email/components':
         specifier: ^0.0.31
         version: 0.0.31(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@react-email/render':
+        specifier: ^1.0.6
+        version: 1.1.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@react-pdf/renderer':
         specifier: ^4.5.1
         version: 4.5.1(react@19.2.5)
@@ -344,7 +347,7 @@ importers:
         specifier: ^19.2.0
         version: 19.2.5
       resend:
-        specifier: ^4.1.2
+        specifier: ^4.0.1
         version: 4.8.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     devDependencies:
       '@repo/tooling':

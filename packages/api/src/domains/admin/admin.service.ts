@@ -1,8 +1,10 @@
-import { asc, count, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, ne, sql } from "drizzle-orm";
 import type { Database } from "@repo/db";
-import { guests } from "@repo/db/schema";
+import { guests, users } from "@repo/db/schema";
 import { sendInvitationEmail } from "@repo/email";
+import { hashPassword } from "@repo/auth";
 import { badRequest, conflict, notFound, serverError } from "../../errors";
+import type { CreateAdminInput } from "./admin.schema";
 
 const RSVP_URL = process.env["NEXT_PUBLIC_RSVP_URL"];
 
@@ -37,7 +39,7 @@ export async function getGuests(db: Database) {
       createdAt: guests.createdAt,
     })
     .from(guests)
-    .orderBy(asc(guests.createdAt));
+    .orderBy(desc(guests.createdAt));
 }
 
 export async function deleteGuest(db: Database, guestId: string) {
@@ -138,4 +140,97 @@ export async function validateCode(db: Database, code: string) {
   if (!updated) serverError("Failed to mark check-in");
 
   return updated;
+}
+
+export async function listAdmins(db: Database) {
+  return db
+    .select({
+      id: users.id,
+      email: users.email,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.role, "admin"))
+    .orderBy(desc(users.createdAt));
+}
+
+export async function createAdmin(
+  db: Database,
+  currentAdminId: string,
+  input: CreateAdminInput,
+) {
+  const existing = await db.query.users.findFirst({
+    where: eq(users.email, input.email),
+  });
+  if (existing) {
+    conflict("An account with this email already exists");
+  }
+
+  const passwordHash = await hashPassword(input.password);
+
+  let created;
+  try {
+    const [row] = await db
+      .insert(users)
+      .values({
+        email: input.email,
+        passwordHash,
+        firstName: input.firstName,
+        lastName: input.lastName,
+        role: "admin",
+        isEmailVerified: true,
+      })
+      .returning({
+        id: users.id,
+        email: users.email,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        createdAt: users.createdAt,
+      });
+    created = row;
+  } catch (err: unknown) {
+    const pgError = err as { code?: string; message?: string };
+    if (pgError?.code === "23505" || pgError?.message?.includes("unique")) {
+      conflict("An account with this email already exists");
+    }
+    throw err;
+  }
+
+  if (!created) {
+    serverError("Failed to create admin");
+  }
+  // Suppress unused warnings — kept for future audit/log use.
+  void currentAdminId;
+  return created;
+}
+
+export async function deleteAdmin(
+  db: Database,
+  currentAdminId: string,
+  adminId: string,
+) {
+  if (adminId === currentAdminId) {
+    badRequest("You cannot remove your own account");
+  }
+
+  const target = await db.query.users.findFirst({
+    where: and(eq(users.id, adminId), eq(users.role, "admin")),
+  });
+  if (!target) notFound("Admin");
+
+  // Make sure at least one admin remains.
+  const [remaining] = await db
+    .select({ value: count() })
+    .from(users)
+    .where(and(eq(users.role, "admin"), ne(users.id, adminId)));
+
+  if ((remaining?.value ?? 0) < 1) {
+    badRequest("At least one admin must remain");
+  }
+
+  await db.delete(users).where(eq(users.id, adminId));
+
+  return { success: true };
 }

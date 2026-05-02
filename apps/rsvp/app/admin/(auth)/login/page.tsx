@@ -48,9 +48,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="relative z-10 grid w-full grid-cols-1 md:grid-cols-2">
+    <div className="relative z-10 grid w-full grid-cols-1 md:grid-cols-[1.05fr_1fr]">
       {/* Left — wedding brand panel */}
-      <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-gradient-to-br from-royal via-royal-dark to-[#041d4a] p-12">
+      <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-gradient-to-br from-royal via-royal-dark to-[#04123a] p-12">
+        {/* Diamond fill pattern */}
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
@@ -58,6 +59,7 @@ export default function AdminLoginPage() {
             backgroundSize: "40px 40px",
           }}
         />
+        {/* Soft monogram halo */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <Image
             src="/logo/monogram-white-on-blue.jpeg"
@@ -68,44 +70,83 @@ export default function AdminLoginPage() {
             aria-hidden
           />
         </div>
+        {/* Hairline gold inner frame */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-6 rounded-[2px] border border-white/10"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-7 rounded-[2px] border border-white/[0.04]"
+        />
 
-        <div className="relative z-10 text-center">
-          <p className="font-sans text-[10px] tracking-[0.5em] uppercase text-white/50 mb-8">
+        <div className="relative z-10 flex flex-col items-center text-center">
+          {/* Crisp monogram on top */}
+          <div className="relative mb-6">
+            <Image
+              src="/logo/monogram-white-on-blue.jpeg"
+              alt="Divine Love 26"
+              width={120}
+              height={120}
+              className="h-[88px] w-[88px] rounded-full object-cover ring-1 ring-white/30 shadow-[0_0_60px_rgba(168,180,196,0.25)]"
+              priority
+            />
+          </div>
+
+          <p className="font-sans text-[10px] tracking-[0.55em] uppercase text-white/55 mb-5">
             Event Administration
           </p>
-          <h1 className="font-serif italic font-light text-white text-5xl mb-3">
+          <h1 className="font-serif italic font-light text-white text-[44px] md:text-[52px] leading-none mb-2">
             Divine Love 26
           </h1>
-          <p className="font-serif italic text-royal-100 text-xl mb-10">
+          <p className="font-serif italic text-royal-100 text-xl mb-8">
             Idah &amp; Ikhioya
           </p>
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-            <span className="text-white/70 text-lg">&#10086;</span>
-            <span className="h-px w-12 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+
+          <div className="flex items-center justify-center gap-3 mb-7">
+            <span className="h-px w-14 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+            <span className="inline-block h-1.5 w-1.5 rotate-45 bg-white/70" />
+            <span className="h-px w-14 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
           </div>
-          <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-white/50">
+
+          <p className="font-sans text-[10px] tracking-[0.45em] uppercase text-white/55">
             20 &middot; June &middot; 2026
           </p>
         </div>
       </div>
 
       {/* Right — form */}
-      <div className="flex items-center justify-center px-6 py-16 md:px-12">
+      <div className="flex items-center justify-center px-6 py-16 md:px-14 bg-warm-50/30">
         <div className="w-full max-w-md">
-          <div className="mb-10 text-center">
+          {/* Mobile-only monogram */}
+          <div className="md:hidden flex justify-center mb-6">
+            <Image
+              src="/logo/monogram-white-on-blue.jpeg"
+              alt="Divine Love 26"
+              width={88}
+              height={88}
+              className="h-16 w-16 rounded-full object-cover ring-1 ring-royal-100"
+              priority
+            />
+          </div>
+
+          <div className="mb-8 text-center">
             <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-warm-500 mb-3">
               Staff Portal
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-light text-royal-dark mb-3">
-              Welcome back
+            <h2 className="font-sans font-medium text-royal-dark text-[28px] md:text-[32px] leading-tight tracking-tight mb-2">
+              Sign in to admin
             </h2>
-            <p className="font-sans text-sm text-warm-500">
-              Sign in to manage registrations and validate guests.
+            <p className="font-sans text-[13px] text-gray-500">
+              Manage registrations, send invitations, and check in guests.
             </p>
           </div>
 
-          <div className="relative rounded-2xl border border-gray-100 bg-white p-8 md:p-10 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.08)]">
+          <div className="relative rounded-2xl border border-gray-100 bg-white p-8 md:p-9 shadow-[0_20px_60px_-30px_rgba(11,61,145,0.25)]">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-royal/30 to-transparent"
+            />
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div>
                 <label

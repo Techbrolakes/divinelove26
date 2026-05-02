@@ -9,8 +9,10 @@
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "env": [
         "DATABASE_URL",
-        "RESEND_API_KEY",
-        "RESEND_FROM_EMAIL",
+        "ZEPTOMAIL_TOKEN",
+        "ZEPTOMAIL_FROM_EMAIL",
+        "ZEPTOMAIL_FROM_NAME",
+        "ZEPTOMAIL_HOST",
         "AUTH_SECRET",
         "NEXT_PUBLIC_MARKETING_URL",
         "NEXT_PUBLIC_RSVP_URL"

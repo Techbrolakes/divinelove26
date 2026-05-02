@@ -15,11 +15,12 @@
   },
   "dependencies": {
     "@react-email/components": "^0.0.31",
+    "@react-email/render": "^1.0.6",
     "@react-pdf/renderer": "^4.5.1",
     "@repo/env": "workspace:*",
     "qrcode": "^1.5.4",
     "react": "^19.2.0",
-    "resend": "^4.1.2"
+    "resend": "^4.0.1"
   },
   "devDependencies": {
     "@repo/tooling": "workspace:*",

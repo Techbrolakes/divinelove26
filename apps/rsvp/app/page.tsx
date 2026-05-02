@@ -31,7 +31,7 @@ export default function RsvpPage() {
   return (
     <section className="relative min-h-screen overflow-hidden flex items-center justify-center py-16 px-6">
       {/* Background layers */}
-      <div className="absolute inset-0 bg-gradient-to-b from-royal via-royal-dark to-[#030f2e]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-royal-dark via-[#051538] to-[#010514]" />
 
       {/* Diamond pattern */}
       <div
@@ -88,7 +88,7 @@ export default function RsvpPage() {
             transition={{ duration: 1.2, delay: 0.3 }}
             className="font-sans text-[10px] uppercase text-white/50 mb-5"
           >
-            You are cordially invited
+            We&apos;re getting married
           </motion.p>
 
           <h1 className="font-serif italic font-light text-white/95 text-5xl md:text-7xl tracking-tight leading-none">
@@ -117,9 +117,6 @@ export default function RsvpPage() {
           transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
           className="relative"
         >
-          {/* Shimmer glow behind card */}
-          <div className="absolute -inset-px bg-gradient-to-br from-white/30 via-white/10 to-transparent rounded-3xl blur-xl opacity-70" />
-
           <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]">
             {/* Top accent */}
             <div className="absolute inset-x-8 top-0 h-[3px] bg-gradient-to-r from-transparent via-royal to-transparent rounded-full" />
@@ -169,7 +166,7 @@ export default function RsvpPage() {
                   </motion.div>
 
                   <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-gray-900 mb-3">
-                    Reservation Received
+                    Registration Received
                   </p>
                   <h3 className="font-serif italic text-4xl md:text-5xl text-royal-dark mb-4 font-light">
                     Thank you
@@ -181,11 +178,6 @@ export default function RsvpPage() {
                     <span className="h-px w-12 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
                   </div>
 
-                  <p className="font-sans text-[14px] text-gray-900 leading-relaxed max-w-md mx-auto">
-                    Your seat is reserved. We&apos;ll send your private
-                    invitation — complete with a code to present at the door —
-                    straight to your inbox.
-                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -238,14 +230,15 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="text-center mb-2">
         <p className="font-sans text-[10px] tracking-[0.35em] uppercase text-gray-900 mb-3">
-          Reserve your seat
+          Register your interest
         </p>
         <h2 className="font-serif italic text-3xl md:text-4xl text-royal-dark font-light mb-3">
-          Join us on our day
+          Add your name to our list
         </h2>
         <p className="font-sans text-[14px] text-gray-900 leading-relaxed max-w-sm mx-auto">
-          Share your name and email, and we&apos;ll send a private invitation
-          with a code for the door.
+          We&apos;d love to hear from you. Drop your details below — we&apos;re
+          personally going through every registration, and if you&apos;re
+          invited we&apos;ll send the details to your inbox.
         </p>
       </div>
 
@@ -263,7 +256,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
           <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-royal/50" />
           <input
             {...register("fullName")}
-            placeholder="As you'd like it on the invitation"
+            placeholder="First and last name"
             className={inputClass}
           />
         </div>
@@ -312,7 +305,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
         {/* Shimmer effect */}
         <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
         <span className="relative">
-          {isSubmitting ? "Reserving..." : "Reserve My Seat"}
+          {isSubmitting ? "Sending…" : "Send Registration"}
         </span>
       </motion.button>
 

@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { Resend } from "resend";
 import { env } from "@repo/env";
 import { VerificationOTPEmail } from "./templates/verification-otp";
@@ -8,6 +11,9 @@ import {
   type InvitationPDFEvent,
 } from "./pdf/invitation-pdf";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ASSETS_DIR = path.join(__dirname, "..", "assets");
+
 let _resend: Resend | null = null;
 
 function getResend(): Resend {
@@ -17,56 +23,99 @@ function getResend(): Resend {
   return _resend;
 }
 
-function getFromEmail(): string {
-  return env.RESEND_FROM_EMAIL;
+function getFrom(): string {
+  return `${env.RESEND_FROM_NAME} <${env.RESEND_FROM_EMAIL}>`;
+}
+
+let _monogramBuffer: Buffer | null = null;
+async function getMonogramBuffer(): Promise<Buffer> {
+  if (_monogramBuffer) return _monogramBuffer;
+  _monogramBuffer = await readFile(path.join(ASSETS_DIR, "monogram.jpeg"));
+  return _monogramBuffer;
+}
+
+let _invitationBuffer: Buffer | null = null;
+async function getInvitationBuffer(): Promise<Buffer> {
+  if (_invitationBuffer) return _invitationBuffer;
+  _invitationBuffer = await readFile(path.join(ASSETS_DIR, "invitation.jpg"));
+  return _invitationBuffer;
+}
+
+const MONOGRAM_CID = "divinelove26-monogram";
+
+interface SendResult {
+  success: boolean;
+  error?: string;
+}
+
+function describeError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return "Unknown email error";
+  }
+}
+
+function inlineMonogramAttachment(buffer: Buffer) {
+  return {
+    filename: "monogram.jpeg",
+    content: buffer,
+    contentType: "image/jpeg",
+    // content_id lets the HTML reference this part as `cid:divinelove26-monogram`.
+    content_id: MONOGRAM_CID,
+  };
 }
 
 export async function sendVerificationOTP(
   email: string,
   otp: string,
   expiryMinutes = 15,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<SendResult> {
   try {
+    const monogram = await getMonogramBuffer();
+
     const { error } = await getResend().emails.send({
-      from: getFromEmail(),
+      from: getFrom(),
       to: email,
-      subject: `${otp} is your YourApp verification code`,
-      react: VerificationOTPEmail({ otp, expiryMinutes }),
+      subject: `${otp} is your Divine Love 26 verification code`,
+      react: VerificationOTPEmail({
+        otp,
+        expiryMinutes,
+        monogramCid: MONOGRAM_CID,
+      }),
+      attachments: [inlineMonogramAttachment(monogram)],
     });
 
-    if (error) {
-      console.error("[Email] Failed to send verification OTP:", error);
-      return { success: false, error: error.message };
-    }
-
+    if (error) throw error;
     return { success: true };
   } catch (err) {
     console.error("[Email] Error sending verification OTP:", err);
-    return { success: false, error: "Failed to send email" };
+    return { success: false, error: describeError(err) };
   }
 }
 
 export async function sendWelcomeEmail(
   email: string,
   firstName: string,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<SendResult> {
   try {
+    const monogram = await getMonogramBuffer();
+
     const { error } = await getResend().emails.send({
-      from: getFromEmail(),
+      from: getFrom(),
       to: email,
-      subject: "Welcome to YourApp!",
-      react: WelcomeEmail({ firstName }),
+      subject: "Welcome to Divine Love 26",
+      react: WelcomeEmail({ firstName, monogramCid: MONOGRAM_CID }),
+      attachments: [inlineMonogramAttachment(monogram)],
     });
 
-    if (error) {
-      console.error("[Email] Failed to send welcome email:", error);
-      return { success: false, error: error.message };
-    }
-
+    if (error) throw error;
     return { success: true };
   } catch (err) {
     console.error("[Email] Error sending welcome email:", err);
-    return { success: false, error: "Failed to send email" };
+    return { success: false, error: describeError(err) };
   }
 }
 
@@ -88,21 +137,27 @@ export async function sendInvitationEmail({
   rsvpUrl,
   coupleNames = "Idah & Ikhioya",
   weddingDateLabel = "Saturday, 20 June 2026",
-}: SendInvitationParams): Promise<{ success: boolean; error?: string }> {
+}: SendInvitationParams): Promise<SendResult> {
   try {
-    const pdfBuffer = await renderInvitationPDF({
-      fullName,
-      code,
-      events,
-      coupleNames,
-      weddingDateLabel,
-    });
+    const [monogram, invitationImage, pdfBuffer] = await Promise.all([
+      getMonogramBuffer(),
+      getInvitationBuffer(),
+      renderInvitationPDF({
+        fullName,
+        code,
+        events,
+        coupleNames,
+        weddingDateLabel,
+      }),
+    ]);
 
     const firstName = fullName.trim().split(/\s+/)[0] ?? fullName;
-    const pdfFilename = `${firstName}-${coupleNames.replace(/[^a-zA-Z0-9]+/g, "-")}-invitation.pdf`;
+    const slug = coupleNames.replace(/[^a-zA-Z0-9]+/g, "-");
+    const pdfFilename = `${firstName}-${slug}-pass.pdf`;
+    const jpgFilename = `${firstName}-${slug}-invitation.jpg`;
 
     const { error } = await getResend().emails.send({
-      from: getFromEmail(),
+      from: getFrom(),
       to,
       subject: `Your invitation — ${coupleNames}, ${weddingDateLabel}`,
       react: InvitationConfirmationEmail({
@@ -111,8 +166,16 @@ export async function sendInvitationEmail({
         rsvpUrl,
         coupleNames,
         weddingDateLabel,
+        events,
+        monogramCid: MONOGRAM_CID,
       }),
       attachments: [
+        inlineMonogramAttachment(monogram),
+        {
+          filename: jpgFilename,
+          content: invitationImage,
+          contentType: "image/jpeg",
+        },
         {
           filename: pdfFilename,
           content: pdfBuffer,
@@ -121,14 +184,10 @@ export async function sendInvitationEmail({
       ],
     });
 
-    if (error) {
-      console.error("[Email] Failed to send invitation:", error);
-      return { success: false, error: error.message };
-    }
-
+    if (error) throw error;
     return { success: true };
   } catch (err) {
     console.error("[Email] Error sending invitation:", err);
-    return { success: false, error: "Failed to send invitation" };
+    return { success: false, error: describeError(err) };
   }
 }

@@ -1,6 +1,3 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { Resend } from "resend";
 import { env } from "@repo/env";
 import { VerificationOTPEmail } from "./templates/verification-otp";
@@ -10,9 +7,10 @@ import {
   renderInvitationPDF,
   type InvitationPDFEvent,
 } from "./pdf/invitation-pdf";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ASSETS_DIR = path.join(__dirname, "..", "assets");
+import {
+  MONOGRAM_JPEG_BASE64,
+  INVITATION_JPG_BASE64,
+} from "./assets-data";
 
 let _resend: Resend | null = null;
 
@@ -28,16 +26,16 @@ function getFrom(): string {
 }
 
 let _monogramBuffer: Buffer | null = null;
-async function getMonogramBuffer(): Promise<Buffer> {
+function getMonogramBuffer(): Buffer {
   if (_monogramBuffer) return _monogramBuffer;
-  _monogramBuffer = await readFile(path.join(ASSETS_DIR, "monogram.jpeg"));
+  _monogramBuffer = Buffer.from(MONOGRAM_JPEG_BASE64, "base64");
   return _monogramBuffer;
 }
 
 let _invitationBuffer: Buffer | null = null;
-async function getInvitationBuffer(): Promise<Buffer> {
+function getInvitationBuffer(): Buffer {
   if (_invitationBuffer) return _invitationBuffer;
-  _invitationBuffer = await readFile(path.join(ASSETS_DIR, "invitation.jpg"));
+  _invitationBuffer = Buffer.from(INVITATION_JPG_BASE64, "base64");
   return _invitationBuffer;
 }
 

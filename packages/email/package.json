@@ -11,7 +11,8 @@
     "build": "tsc",
     "check-types": "tsc --noEmit",
     "dev": "tsc --watch",
-    "lint": "eslint src --max-warnings 0"
+    "lint": "eslint src --max-warnings 0",
+    "assets:generate": "node scripts/generate-assets-data.mjs"
   },
   "dependencies": {
     "@react-email/components": "^0.0.31",

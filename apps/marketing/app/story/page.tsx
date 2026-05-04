@@ -1,5 +1,4 @@
 import Navbar from "@/components/ui/navbar";
-import BackgroundMusic from "@/components/ui/background-music";
 import StoryScene from "@/components/scenes/story-scene";
 import PrevNext from "@/components/ui/prev-next";
 import { getNeighbours } from "@/lib/scene-nav";
@@ -20,7 +19,6 @@ export default function StoryPage() {
           />
         }
       />
-      <BackgroundMusic />
     </>
   );
 }

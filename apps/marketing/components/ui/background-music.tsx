@@ -6,11 +6,27 @@ const SRC = "/audio/gracious-and-kind.mp3";
 const START_SECONDS = 60;
 const TARGET_VOLUME = 0.18;
 const FADE_MS = 1600;
+const STORAGE_KEY = "divinelove26-bg-time";
+const SAVE_INTERVAL_MS = 2000;
+
+function readSavedTime(): number | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const t = Number.parseFloat(raw);
+    return Number.isFinite(t) && t >= START_SECONDS ? t : null;
+  } catch {
+    return null;
+  }
+}
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeRafRef = useRef<number | null>(null);
   const suspendedByLightboxRef = useRef(false);
+  const restoreTimeRef = useRef<number | null>(null);
+  const lastSavedAtRef = useRef(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [pendingAutoplay, setPendingAutoplay] = useState(false);
 
@@ -40,13 +56,15 @@ export default function BackgroundMusic() {
   const play = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.currentTime < START_SECONDS) {
+    const startAt = restoreTimeRef.current ?? START_SECONDS;
+    if (audio.currentTime < startAt) {
       try {
-        audio.currentTime = START_SECONDS;
+        audio.currentTime = startAt;
       } catch {
         /* metadata not ready — handled by loadedmetadata */
       }
     }
+    restoreTimeRef.current = null;
     audio.volume = 0;
     try {
       await audio.play();
@@ -69,10 +87,41 @@ export default function BackgroundMusic() {
     else void play();
   }, [isPlaying, pause, play]);
 
+  // Restore saved playback position before the first play attempt
+  useEffect(() => {
+    restoreTimeRef.current = readSavedTime();
+  }, []);
+
   // Attempt autoplay on mount
   useEffect(() => {
     void play();
   }, [play]);
+
+  // Persist playback position so it survives full page reloads
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const save = () => {
+      try {
+        window.sessionStorage.setItem(STORAGE_KEY, String(audio.currentTime));
+      } catch {
+        /* storage unavailable */
+      }
+    };
+    const onTimeUpdate = () => {
+      const now = performance.now();
+      if (now - lastSavedAtRef.current < SAVE_INTERVAL_MS) return;
+      lastSavedAtRef.current = now;
+      save();
+    };
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    window.addEventListener("pagehide", save);
+    return () => {
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      window.removeEventListener("pagehide", save);
+      save();
+    };
+  }, []);
 
   // If autoplay was blocked, start on first user gesture
   useEffect(() => {
@@ -143,8 +192,9 @@ export default function BackgroundMusic() {
         loop
         preload="auto"
         onLoadedMetadata={(e) => {
-          if (e.currentTarget.currentTime < START_SECONDS) {
-            e.currentTarget.currentTime = START_SECONDS;
+          const startAt = restoreTimeRef.current ?? START_SECONDS;
+          if (e.currentTarget.currentTime < startAt) {
+            e.currentTarget.currentTime = startAt;
           }
         }}
       />

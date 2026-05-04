@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import { Providers } from "@/providers/trpc-provider";
 import SceneBackdrop from "@/components/ui/scene-backdrop";
+import BackgroundMusic from "@/components/ui/background-music";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -52,6 +53,7 @@ export default function RootLayout({
       <body className="relative h-screen overflow-hidden">
         <SceneBackdrop />
         <Providers>{children}</Providers>
+        <BackgroundMusic />
       </body>
     </html>
   );

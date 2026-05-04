@@ -137,8 +137,7 @@ export async function sendInvitationEmail({
   weddingDateLabel = "Saturday, 20 June 2026",
 }: SendInvitationParams): Promise<SendResult> {
   try {
-    const [monogram, invitationImage, pdfBuffer] = await Promise.all([
-      getMonogramBuffer(),
+    const [invitationImage, pdfBuffer] = await Promise.all([
       getInvitationBuffer(),
       renderInvitationPDF({
         fullName,
@@ -165,10 +164,8 @@ export async function sendInvitationEmail({
         coupleNames,
         weddingDateLabel,
         events,
-        monogramCid: MONOGRAM_CID,
       }),
       attachments: [
-        inlineMonogramAttachment(monogram),
         {
           filename: jpgFilename,
           content: invitationImage,

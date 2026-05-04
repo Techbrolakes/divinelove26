@@ -18,8 +18,6 @@ interface InvitationConfirmationEmailProps {
   coupleNames?: string;
   weddingDateLabel?: string;
   events?: InvitationPDFEvent[];
-  /** Content-ID for the inline monogram image (matches the inline_image cid). */
-  monogramCid?: string;
 }
 
 const ROYAL = "#0b3d91";
@@ -67,7 +65,6 @@ export function InvitationConfirmationEmail({
   coupleNames = "Idah & Ikhioya",
   weddingDateLabel = "Saturday, 20 June 2026",
   events,
-  monogramCid,
 }: InvitationConfirmationEmailProps) {
   const firstName = fullName.trim().split(/\s+/)[0] ?? fullName;
   const spacedCode = code.replace(/(\d{3})(\d{3})/, "$1 $2");
@@ -83,7 +80,6 @@ export function InvitationConfirmationEmail({
       </Preview>
       <Body style={body}>
         <Container style={wrapper}>
-          {/* Royal hero with monogram */}
           <Section style={hero}>
             <Text style={heroEyebrow}>#DIVINELOVE26</Text>
             <Text style={heroTitle}>You are cordially invited</Text>
@@ -157,13 +153,6 @@ const hero: React.CSSProperties = {
   padding: "36px 24px 30px",
   borderRadius: "6px 6px 0 0",
   borderTop: `4px solid ${GOLD}`,
-};
-
-const monogramImg: React.CSSProperties = {
-  display: "block",
-  margin: "0 auto 14px",
-  borderRadius: "50%",
-  border: `1px solid ${GOLD}`,
 };
 
 const heroEyebrow: React.CSSProperties = {

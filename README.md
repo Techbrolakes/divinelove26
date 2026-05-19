@@ -161,10 +161,3 @@ divinelove26/
 │       └── features/auth/
 └── packages/               # api, auth, db, email, env, tooling, ui
 ```
-
-## Notes for the next maintainer
-
-- The default admin password ships in seed code — rotate it before going live.
-- Background music autoplay is gated by user interaction; the file lives in `apps/marketing/public/audio/`.
-- The email package embeds binary assets at build time via `pnpm --filter @repo/email run assets:generate` — re-run after swapping the monogram or invitation image.
-- QR check-in lives in `apps/rsvp/app/admin/(dashboard)/validate` and uses `@yudiel/react-qr-scanner`.

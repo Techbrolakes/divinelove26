@@ -1,33 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { z } from "zod";
-import { Mail, User, CheckCircle2 } from "lucide-react";
-import { useTRPC } from "@/lib/trpc";
-import ConfettiEffect from "@/components/ui/confetti-effect";
-
-const registerSchema = z.object({
-  fullName: z.string().min(2, "Please enter your full name").trim(),
-  email: z
-    .string()
-    .email("Please enter a valid email")
-    .trim()
-    .toLowerCase(),
-});
-type RegisterInput = z.infer<typeof registerSchema>;
-
-const inputClass =
-  "w-full pl-11 pr-4 py-4 bg-white border border-royal-100 rounded-xl font-sans text-[16px] text-royal-700 placeholder:text-gray-400 focus:outline-none focus:border-royal focus:ring-4 focus:ring-royal/10 transition-all duration-300";
+import { Lock } from "lucide-react";
 
 export default function RsvpPage() {
-  const [done, setDone] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-
   return (
     <section className="relative min-h-screen overflow-hidden flex items-center justify-center py-16 px-6">
       {/* Background layers */}
@@ -121,66 +98,44 @@ export default function RsvpPage() {
             {/* Top accent */}
             <div className="absolute inset-x-8 top-0 h-[3px] bg-gradient-to-r from-transparent via-royal to-transparent rounded-full" />
 
-            <AnimatePresence mode="wait">
-              {!done ? (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <RegisterForm
-                    onSuccess={() => {
-                      setDone(true);
-                      setShowConfetti(true);
-                    }}
-                  />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    duration: 0.5,
-                    ease: "easeOut",
-                  }}
-                  className="text-center py-8"
-                >
-                  <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                      delay: 0.1,
-                    }}
-                    className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-royal to-royal-dark flex items-center justify-center shadow-[0_15px_40px_-10px_rgba(11,61,145,0.5)]"
-                  >
-                    <CheckCircle2
-                      className="w-10 h-10 text-white"
-                      strokeWidth={1.5}
-                    />
-                  </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="text-center py-8"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 15,
+                  delay: 0.1,
+                }}
+                className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-royal to-royal-dark flex items-center justify-center shadow-[0_15px_40px_-10px_rgba(11,61,145,0.5)]"
+              >
+                <Lock className="w-9 h-9 text-white" strokeWidth={1.5} />
+              </motion.div>
 
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-gray-900 mb-3">
-                    Registration Received
-                  </p>
-                  <h3 className="font-serif italic text-4xl md:text-5xl text-royal-dark mb-4 font-light">
-                    Thank you
-                  </h3>
+              <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-gray-900 mb-3">
+                Registration Closed
+              </p>
+              <h3 className="font-serif italic text-4xl md:text-5xl text-royal-dark mb-4 font-light">
+                Thank you
+              </h3>
 
-                  <div className="flex items-center justify-center gap-3 mb-6">
-                    <span className="h-px w-12 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
-                    <span className="text-royal/50 text-lg">&#10086;</span>
-                    <span className="h-px w-12 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
-                  </div>
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <span className="h-px w-12 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
+                <span className="text-royal/50 text-lg">&#10086;</span>
+                <span className="h-px w-12 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
+              </div>
 
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <p className="font-sans text-[15px] leading-relaxed text-gray-600 max-w-md mx-auto">
+                Registration is now closed. Thank you to everyone who
+                registered — we can&apos;t wait to celebrate with you.
+              </p>
+            </motion.div>
           </div>
         </motion.div>
 
@@ -193,125 +148,7 @@ export default function RsvpPage() {
         >
           #DivineLove26
         </motion.p>
-
-        {showConfetti && <ConfettiEffect />}
       </div>
     </section>
-  );
-}
-
-function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
-  const trpc = useTRPC();
-  const submit = useMutation(trpc.rsvp.register.mutationOptions());
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setError,
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const onSubmit = async (data: RegisterInput) => {
-    try {
-      await submit.mutateAsync(data);
-      onSuccess();
-    } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again.";
-      setError("root", { message });
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="text-center mb-2">
-        <p className="font-sans text-[10px] tracking-[0.35em] uppercase text-gray-900 mb-3">
-          Register your interest
-        </p>
-        <h2 className="font-serif italic text-3xl md:text-4xl text-royal-dark font-light mb-3">
-          Add your name to our list
-        </h2>
-        <p className="font-sans text-[14px] text-gray-900 leading-relaxed max-w-sm mx-auto">
-          We&apos;d love to hear from you. Drop your details below — we&apos;re
-          personally going through every registration, and if you&apos;re
-          invited we&apos;ll send the details to your inbox.
-        </p>
-      </div>
-
-      <div className="flex items-center justify-center gap-3 pb-2">
-        <span className="h-px w-10 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
-        <span className="text-royal/40 text-sm">&#10086;</span>
-        <span className="h-px w-10 bg-gradient-to-r from-transparent via-royal/30 to-transparent" />
-      </div>
-
-      <div>
-        <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gray-900 mb-2 pl-1">
-          Full name
-        </label>
-        <div className="relative">
-          <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-royal/50" />
-          <input
-            {...register("fullName")}
-            placeholder="First and last name"
-            className={inputClass}
-          />
-        </div>
-        {errors.fullName && (
-          <p className="text-red-500 text-xs mt-1.5 font-sans pl-1">
-            {errors.fullName.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gray-900 mb-2 pl-1">
-          Email address
-        </label>
-        <div className="relative">
-          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-royal/50" />
-          <input
-            type="email"
-            autoComplete="email"
-            {...register("email")}
-            placeholder="you@example.com"
-            className={inputClass}
-          />
-        </div>
-        {errors.email && (
-          <p className="text-red-500 text-xs mt-1.5 font-sans pl-1">
-            {errors.email.message}
-          </p>
-        )}
-      </div>
-
-      {errors.root && (
-        <div className="rounded-lg bg-red-50 border border-red-100 p-3 text-center">
-          <p className="text-red-600 text-sm font-sans">
-            {errors.root.message}
-          </p>
-        </div>
-      )}
-
-      <motion.button
-        type="submit"
-        disabled={isSubmitting}
-        whileTap={{ scale: 0.98 }}
-        className="group relative w-full cursor-pointer py-4 bg-gradient-to-br from-royal to-royal-dark text-white font-sans text-[11px] tracking-[0.3em] uppercase rounded-xl overflow-hidden shadow-[0_10px_30px_-10px_rgba(11,61,145,0.5)] hover:shadow-[0_15px_40px_-10px_rgba(11,61,145,0.6)] transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {/* Shimmer effect */}
-        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-        <span className="relative">
-          {isSubmitting ? "Sending…" : "Send Registration"}
-        </span>
-      </motion.button>
-
-      <p className="text-center font-serif italic text-gray-900 text-[13px] pt-1">
-        Idah &amp; Ikhioya &middot; 20 June 2026
-      </p>
-    </form>
   );
 }
